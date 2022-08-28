@@ -102,6 +102,13 @@ const AppContextProvider = ({children}) => {
         }))
 
     }
+
+    const onResetPlaylist = () => {
+        setAppData({
+            playlist: [],
+            track: null
+        })
+    }
     const appContextData = {
         lang,
         setLang,
@@ -119,7 +126,8 @@ const AppContextProvider = ({children}) => {
         setLoadingOpenAd,
         appData,
         setAppData,
-        addTrackToPlaylist
+        addTrackToPlaylist,
+        onResetPlaylist
     }
     return (
         <AppContext.Provider value={appContextData}>

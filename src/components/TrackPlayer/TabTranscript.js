@@ -1,5 +1,6 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {COLOR_BASIC_2} from '../../utils/colors';
 
 
 const TabTranscript = (props) => {
@@ -8,9 +9,11 @@ const TabTranscript = (props) => {
     } = props;
     return (
         <View style={styles.container}>
-            <Text>
-                {trackData?.transcript ?? ''}
-            </Text>
+            <ScrollView style={styles.transcript}>
+                <Text style={styles.transcriptText}>
+                    {trackData?.transcript ?? ''}
+                </Text>
+            </ScrollView>
         </View>
     )
 }
@@ -28,8 +31,12 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
     },
-    logoImg: {
-        width: 120,
-        height: 120,
+    transcript: {
+       padding: 10,
+    },
+    transcriptText: {
+        fontSize: 15,
+        lineHeight: 24,
+        color: COLOR_BASIC_2,
     }
 })

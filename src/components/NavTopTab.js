@@ -1,17 +1,28 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import TabHome from './TabHome';
 import TabLiked from './TabLiked';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {COLOR_WHITE, WHITE} from '../utils/colors';
 
 const Tab = createMaterialTopTabNavigator();
 
 const NavTopTab = (props) => {
     return (
-        <Tab.Navigator>
-            <Tab.Screen name="Home" component={TabHome} />
-            <Tab.Screen name="liked" component={TabLiked} />
-        </Tab.Navigator>
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <Image
+                    source={require('./../assets/images/ant.png')}
+                    style={styles.logoImg}
+                />
+            </View>
+            <View style={styles.body}>
+                <Tab.Navigator>
+                    <Tab.Screen name="Home" component={TabHome} />
+                    <Tab.Screen name="liked" component={TabLiked} />
+                </Tab.Navigator>
+            </View>
+        </View>
     )
 }
 
@@ -23,13 +34,19 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: COLOR_WHITE,
     },
-    home: {
-        flex: 1,
-        width: '100%',
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     logoImg: {
-        width: 120,
-        height: 120,
+        width: 36,
+        height: 36,
+    },
+    body: {
+        flex: 1,
+        width: '100%',
     }
 })

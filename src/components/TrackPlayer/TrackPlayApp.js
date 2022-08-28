@@ -13,7 +13,7 @@ import Slider from '@react-native-community/slider';
 import {IMAGE_RANDOM_BY_INDEX, WINDOW_WIDTH} from '../../utils/constants';
 import {toHHMMSS} from '../../utils/functions';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import {COLOR_BASIC_1} from '../../utils/colors';
+import {COLOR_BASIC_1, COLOR_BASIC_2} from '../../utils/colors';
 import {AppContext} from '../../contexts/AppContext';
 import {getRandomTrackId} from '../../databases/db';
 // import styles from './styles';
@@ -31,10 +31,14 @@ const songDetails = {
 
 const TrackPlayApp = (props) => {
     const {
-        audioLink
+        audioLink,
+        isFullScreen,
+        trackData,
+        onFullScreenTrack
     } = props;
     const {
-        addTrackToPlaylist
+        addTrackToPlaylist,
+        onResetPlaylist
     } = useContext(AppContext);
     useEffect(() => {
         return () => {
@@ -123,64 +127,139 @@ const TrackPlayApp = (props) => {
     const currentTimeString = toHHMMSS(duration*sliderValue);
     const durationString = toHHMMSS(duration);
     const data = (sliderValue ?? 0)*(WINDOW_WIDTH - 20)-50;
-    return (
-        <>
-            <View style={styles.sliderWrapper}>
-                <Slider
-                    style={styles.progressBar}
-                    minimumValue={0}
-                    maximumValue={1}
-                    value={sliderValue}
-                    minimumTrackTintColor="#111000"
-                    maximumTrackTintColor="#000000"
-                    onSlidingStart={slidingStarted}
-                    onSlidingComplete={slidingCompleted}
-                    thumbTintColor="#000"
-                />
-                <View style={[
-                    styles.timeBar,
-                    {
-                        left: data > 0 ? data : 0
-                    }
-                ]}>
-                    <Text style={styles.timeBarText}>{currentTimeString}/{durationString}</Text>
+    if (isFullScreen) {
+        return (
+            <>
+                <View style={styles.sliderWrapper}>
+                    <Slider
+                        style={styles.progressBar}
+                        minimumValue={0}
+                        maximumValue={1}
+                        value={sliderValue}
+                        minimumTrackTintColor="#111000"
+                        maximumTrackTintColor="#000000"
+                        onSlidingStart={slidingStarted}
+                        onSlidingComplete={slidingCompleted}
+                        thumbTintColor="#000"
+                    />
+                    <View style={[
+                        styles.timeBar,
+                        {
+                            left: data > 0 ? data : 0
+                        }
+                    ]}>
+                        <Text style={styles.timeBarText}>{currentTimeString}/{durationString}</Text>
+                    </View>
+                </View>
+                <View style={styles.playAction}>
+                    <TouchableOpacity onPress={() => {
+                        // getRandomTrackId()
+                        //     .then(res => {
+                        //         console.log(res);
+                        //         addTrackToPlaylist(res);
+                        //     })
+                    }}>
+                        <IonIcon
+                            name={'shuffle'}
+                            size={24}
+                            color={COLOR_BASIC_2}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+
+                    }}>
+                        <IonIcon
+                            name={'ios-play-skip-back'}
+                            size={24}
+                            color={COLOR_BASIC_2}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        onButtonPressed()
+                    }}>
+                        <IonIcon
+                            name={isPlaying ? 'ios-pause' : 'ios-play'}
+                            size={24}
+                            color={COLOR_BASIC_2}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        getRandomTrackId()
+                            .then(res => {
+                                console.log(res);
+                                addTrackToPlaylist(res);
+                            })
+                    }}>
+                        <IonIcon
+                            name={'ios-play-skip-forward'}
+                            size={24}
+                            color={COLOR_BASIC_2}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        // getRandomTrackId()
+                        //     .then(res => {
+                        //         console.log(res);
+                        //         addTrackToPlaylist(res);
+                        //     })
+                    }}>
+                        <IonIcon
+                            name={'repeat'}
+                            size={24}
+                            color={COLOR_BASIC_2}
+                        />
+                    </TouchableOpacity>
                 </View>
 
-            </View>
-            <View style={styles.playAction}>
-                <TouchableOpacity onPress={() => {
-
-                }}>
-                    <IonIcon
-                        name={'ios-play-skip-back'}
-                        size={24}
-                        color={COLOR_BASIC_1}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    onButtonPressed()
-                }}>
+            </>
+        )
+    }
+    return (
+        <View style={styles.smallContainer}>
+            <TouchableOpacity
+                style={styles.smallContent}
+                onPress={() => {
+                    onFullScreenTrack()
+                }}
+            >
+                <Image
+                    source={{
+                        uri: trackData.image
+                    }}
+                    style={styles.smallTrackImg}
+                />
+                <Text style={styles.smallTrackNameText}>
+                    {trackData.name}
+                </Text>
+            </TouchableOpacity>
+            <View style={styles.smallAction}>
+                <TouchableOpacity
+                    style={styles.actionBtn}
+                    onPress={() => {
+                        onButtonPressed()
+                    }}
+                >
                     <IonIcon
                         name={isPlaying ? 'ios-pause' : 'ios-play'}
                         size={24}
-                        color={COLOR_BASIC_1}
+                        color={COLOR_BASIC_2}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    getRandomTrackId()
-                        .then(res => {
-                            console.log(res);
-                            addTrackToPlaylist(res);
-                        })
-                }}>
+                <TouchableOpacity
+                    style={styles.actionBtn}
+                    onPress={() => {
+                        // onButtonPressed()
+                        onResetPlaylist();
+                    }}
+                >
                     <IonIcon
-                        name={'ios-play-skip-forward'}
+                        name={'close'}
                         size={24}
-                        color={COLOR_BASIC_1}
+                        color={COLOR_BASIC_2}
                     />
                 </TouchableOpacity>
             </View>
-        </>
+        </View>
     );
 };
 
@@ -225,9 +304,43 @@ const styles = StyleSheet.create({
         borderRadius: 40,
     },
     playAction: {
-        width: WINDOW_WIDTH*0.6,
+        width: '100%',
+        // width: WINDOW_WIDTH*0.6,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+    },
+    smallContainer: {
+        height: '100%',
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 5,
+    },
+    smallContent: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    smallTrackImg: {
+        height: 36,
+        width: 36,
+        borderRadius: 18
+    },
+    smallTrackNameText: {
+        paddingHorizontal: 5,
+        fontSize: 13,
+        fontWeight: '500',
+        flex: 1,
+    },
+    smallAction: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+    },
+    actionBtn: {
+        marginHorizontal: 5,
+        color: COLOR_BASIC_2,
     }
 });

@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     homeWithPlayer: {
-        marginBottom: 120
+        marginBottom: 60
     },
     home: {
         flex: 1,
