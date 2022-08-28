@@ -1,0 +1,182 @@
+{
+  "label": {
+    "search": "enter keyword ...",
+    "no_more": "no more",
+    "yes": "yes",
+    "no": "no",
+    "sponsored_by": "sponsored by",
+    "action_confirm": "Are you sure you want to take this action?",
+    "skip": "skip",
+    "unit": "unit"
+  },
+  "tabBar": {
+    "learn": "learn",
+    "statis": "statis"
+  },
+  "group": {
+    "my_group": "My Vocabulary Group",
+    "oxford_topic": "Topic Dictionaries Vocabulary",
+    "oxford_3000": "The Oxford 3000 Vocabulary",
+    "oxford_5000": "The Oxford 5000 Vocabulary",
+    "500_toefl": "500 TOEFL Vocabulary",
+    "600_ielts": "600 IELTS Vocabulary",
+    "1200_toeic": "1200 TOEIC Vocabulary",
+    "2100_sat": "2100 SAT Vocabulary",
+    "600_beginners": "600 Beginners Vocabulary",
+    "600_intermediates_1": "600 Intermediate 1 Vocabulary",
+    "600_intermediates_2": "600 Intermediate 2 Vocabulary",
+    "600_high_intermediate": "600 High Intermediate Vocabulary",
+    "600_low_advanced": "600 Low Advanced Vocabulary",
+    "600_advanced": "600 Advanced Vocabulary",
+    "1000_common": "1000 Common Vocabulary",
+    "1700_business": "1700 Business Vocabulary",
+    "2800_written": "2800 Written Vocabulary",
+    "3000_spoken": "3000 Spoken Vocabulary",
+    "kindergarten": "Kindergarten Vocabulary",
+    "grade_1": "First Grade Vocabulary",
+    "grade_2": "Second Grade Vocabulary",
+    "grade_3": "Third Grade Vocabulary",
+    "grade_4": "Fourth Grade Vocabulary",
+    "grade_5": "Fifth Grade Vocabulary",
+    "grade_6": "Sixth Grade Vocabulary",
+    "grade_7": "Seventh Grade Vocabulary",
+    "grade_8": "Eighth Grade Vocabulary",
+    "grade_9": "Ninth Grade Vocabulary",
+    "grade_10_basic": "Tenth Grade Basic Vocabulary",
+    "grade_10_advanced": "Tenth Grade Advanced Vocabulary",
+    "grade_11_basic": "Eleventh Grade Basic Vocabulary",
+    "grade_11_advanced": "Eleventh Grade Advanced Vocabulary",
+    "grade_12_basic": "Twelfth Grade Basic Vocabulary",
+    "grade_12_advanced": "Twelfth Grade Advanced Vocabulary"
+  },
+  "welcome": {
+    "continue": "Continue",
+    "slogan": "learn vocabulary like ants",
+    "appName": "AntVoca",
+    "welcome": "Welcome!",
+    "loading": "we need few minutes to download and extract the original data",
+    "loading2": "you can use offline 30000 words",
+    "select_language": "select language",
+    "start": "start",
+    "you_selected": "you selected"
+  },
+  "words_app": {
+    "list": "list",
+    "flashcard": "flashcard",
+    "start_learn": "start study",
+    "example": "example",
+    "not_know": "not know",
+    "know": "know",
+    "context": "context",
+    "context_of": "contexts of"
+  },
+  "gaming": {
+    "cloud_wrong_word": "cloud wrong word",
+    "cloud_wrong_definition": "cloud wrong definition",
+    "matching_word": "matching word",
+    "missing_letter": "missing letter",
+    "unscramble_word": "unscramble word",
+    "smashing_gift": "smashing gift",
+    "wrong_word": "wrong word",
+    "wrong_define": "wrong define",
+    "memory_define_word": "memory",
+    "matching_define_word": "matching",
+    "unscrambled_word": " unscrambled word",
+    "congratulations": "Congratulations, you've hit a new record!",
+    "point": "point",
+    "your_point_is": "Your score is",
+    "revival": "revival",
+    "exit": "exit",
+    "replay": "replay",
+    "continue": "continue",
+    "check": "check",
+    "rules": "game rules",
+    "guide": {
+      "common": "You have a maximum of 3 hearts.\nWhen all the hearts are used up, the game is over.\n\nFor each correct VOCA, the score you will receive corresponds to the level of that VOCA:\nA1 - 1 score\nA2 - 2 scores\nB1 - 3 scores\nB2 - 4 scores\nC1 - 5 scores\nC2 - 6 scores\n\nWish you happy gaming!",
+      "cloud_wrong_word": {
+        "correct": "You choose the correct word",
+        "incorrect": "You choose the incorrect word"
+      },
+      "cloud_wrong_definition": {
+        "correct": "You choose the correct definition",
+        "incorrect": "You choose the incorrect definition"
+      },
+      "matching_word": {
+        "correct": "You match words and definitions correctly",
+        "incorrect": "You combine words and definitions incorrectly"
+      },
+      "missing_letter": {
+        "correct": "You choose exactly the missing letter",
+        "incorrect": "You incorrectly selected the missing letter"
+      },
+      "unscramble_word": {
+        "correct": "You write correct word",
+        "incorrect": "You write incorrect word"
+      },
+      "smashing_gift": {
+        "correct": "You smash the incorrect word",
+        "incorrect": "You smash the correct word"
+      }
+    }
+  },
+  "myGroup": {
+    "newGroup": "create new set",
+    "save": "save",
+    "groupName": "group name",
+    "newWord": "new vocabulary"
+  },
+  "trainingType": {
+    "choice_meaning": "choice meaning",
+    "choice_photo": "choice photo",
+    "choice_word": "choice word",
+    "write_word": "write word"
+  },
+  "statisAction": {
+    "random_training": "random training",
+    "random_gaming": "random gaming",
+    "remind_words": "vocabulary to remind",
+    "know_words": "known vocabulary"
+  },
+  "wordsRemind": {
+    "remindText": "word reminder",
+    "later": "later",
+    "study": "study"
+  },
+  "notification": {
+    "word_reminder_title": "You have some words to remind!",
+    "daily_study_title": "Daily study reminder",
+    "daily_study_message": "Anyway, let's learn English vocabulary!"
+  },
+  "navigationTitle": {
+    "study": "study",
+    "settings": "settings",
+    "training": "training",
+    "gaming": "gaming",
+    "random_training": "random training",
+    "cloud_wrong_word": "cloud wrong word",
+    "cloud_wrong_definition": "cloud wrong definition",
+    "matching_word": "matching word",
+    "missing_letter": "missing letter",
+    "unscramble_word": "unscramble word",
+    "smashing_gift": "smashing gift",
+    "random_gaming": "random gaming",
+    "remind_words": "word list to remind",
+    "know_words": "known word list",
+    "select_group": "select group"
+  },
+  "statis": {
+    "today": "vocabulary you learned today",
+    "thisWeek": "vocabulary you learned this week",
+    "thisMonth": "vocabulary you learned this month"
+  },
+  "settings": {
+    "phonetic_audio": "phonetic audio",
+    "sound_check_question": "sound check question",
+    "sound_background": "sound background",
+    "notification_remind": "notification remind",
+    "notification_daily_time": "notification daily time",
+    "daily_study_reminder_time": "daily study reminder time",
+    "reset": "reset",
+    "dailyDateTitle": "daily study reminder time"
+  }
+}

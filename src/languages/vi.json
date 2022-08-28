@@ -1,0 +1,283 @@
+{
+  "label": {
+    "search": "nhập từ khóa ...",
+    "no_more": "không còn nữa",
+    "yes": "có",
+    "no": "không",
+    "stop": "dừng",
+    "check_save": "kiểm tra & lưu",
+    "must_select_answer": "bạn phải chọn đáp án!!!",
+    "loading_content_text_with_lookup": "bạn đang chọn chế độ tra từ trong đoạn văn, chúng tôi cần chút thời gian để phân tích!",
+    "not_found": "không tìm thấy",
+    "vietnamese": "tiếng việt",
+    "english": "tiếng anh",
+    "beginner": "cơ bản",
+    "intermediate": "nâng cao",
+    "must_download_dic": "Bạn phải tải về bộ từ điển",
+    "again": "làm lại",
+    "exercise": "bài tập",
+    "network_error": "bạn không kết nối với Internet",
+    "noti_download_offline": "danh sách chỉ có 100 phần, bấm vào nút tải xuống để tải thêm và sử dụng offline",
+    "must_1_channel_liked": "phải có ít nhất 1 kênh được thích",
+    "sponsored_by": "tài trợ bởi",
+    "action_confirm": "Bạn có chắc chắn muốn thực hiện hành động này không?"
+  },
+  "tabBar": {
+    "bilingual": "song ngữ",
+    "grammar": "ngữ pháp",
+    "vocabulary": "từ vựng",
+    "writing": "viết",
+    "speaking": "nói",
+    "reading": "đọc",
+    "listening": "nghe",
+    "video": "video",
+    "dictionary": "từ điển",
+    "app_info": "chúng tôi"
+  },
+  "customNavigation": {
+    "bilingual": "song ngữ",
+    "bilingual_articles": "bài báo song ngữ",
+    "bilingual_idioms": "thành ngữ song ngữ",
+    "bilingual_quotes": "châm ngôn song ngữ",
+    "bilingual_stories": "truyện song ngữ",
+    "grammar": "ngữ pháp",
+    "grammar_handbook": "sổ tay ngữ pháp",
+    "grammar_with_level_multiple_choice": "bài tập trắc nghiệm theo cấp độ",
+    "grammar_with_level_multiple_choice_app": "bài tập trắc nghiệm theo cấp độ",
+    "grammar_with_topic_multiple_choice": "bài tập trắc nghiệm theo chủ đề",
+    "grammar_with_topic_fill_blanks": "bài tập điền vào ô trống theo chủ đề",
+    "reading": "đọc",
+    "reading_audio_level": "bài đọc theo cấp độ với audio",
+    "reading_comprehension": "đọc hiểu",
+    "reading_scrambled": "bài tập sắp xếp",
+    "listening": "nghe",
+    "listening_conversation": "nghe đoạn hội thoại",
+    "listening_short_talk": "nghe bài nói ngắn",
+    "listening_photograph": "nghe với ảnh",
+    "listening_comprehension_level": "nghe hiểu theo cấp độ",
+    "listening_comprehension_level_app": "nghe hiểu theo cấp độ",
+    "speaking": "nói",
+    "speaking_conversation_level": "bài nói hội thoại theo cấp độ",
+    "speaking_phonetics": "ngữ âm",
+    "speaking_structure_common": "cấu trúc nói phổ thông",
+    "writing": "viết",
+    "writing_essays": "viết tiểu luận",
+    "writing_essays_level": "viết tiểu luận theo chủ đề",
+    "writing_dictation_level": "viết chính tả theo cấp độ",
+    "writing_dictation_topic": "viết chính tả theo chủ đề",
+    "writing_dictation_topic_exercise": "viết chính tả theo chủ đề",
+    "vocabulary": "từ vựng",
+    "vocabulary_app": "từ vựng",
+    "vocabulary_practice": "luyện tập",
+    "vocabulary_game": "trò chơi",
+    "vocabulary_game_match_english_vs_vietnamese": "trò chơi kết hợp từ bằng định nghĩa",
+    "vocabulary_game_match_english_vs_image": "trò chơi kết hợp từ bằng hình ảnh",
+    "vocabulary_game_memory_english_vs_vietnamese": "trò chơi trí nhớ bằng định nghĩa",
+    "vocabulary_game_memory_english_vs_image": "trò chơi trí nhớ bằng hình ảnh",
+    "vocabulary_5000": "5000 từ vựng oxford",
+    "vocabulary_topic": "từ vựng oxford theo chủ đề",
+    "video": "video",
+    "video_history": "video đã xem",
+    "dictionary": "từ diển",
+    "history_word_view": "lịch sử tra từ",
+    "app_info": "chúng tôi"
+  },
+  "bilingual": {
+    "label": {
+      "articles": "bài báo",
+      "idioms": "thành ngữ",
+      "quotes": "châm ngôn",
+      "stories": "truyện"
+    }
+  },
+  "grammar": {
+    "label": {
+      "handbook": "sổ tay",
+      "exercise_multiple_choice_level": "bài tập trắc nghiệm theo cấp độ",
+      "exercise_multiple_choice_topic": "bài tập trắc nghiệm theo chủ đề",
+      "exercise_fill_blanks_topic": "bài tập điền vào ô trống theo chủ đề"
+    },
+    "exercise_multiple_choice_level": {
+      "lv1": "A1 & A2",
+      "lv2": "A2",
+      "lv3": "B1 & B2",
+      "lv4": "B2 & C1",
+      "lv5": "C1 & C2"
+    }
+  },
+  "vocabulary": {
+    "label": {
+      "oxford_vocabulary_by_topic": "từ vựng OXFORD theo chủ đề",
+      "5000_oxford_vocabulary": "5000 từ vựng OXFORD",
+      "toeic_vocabulary": "từ vựng TOEIC",
+      "toefl_vocabulary": "từ vựng TOEFL",
+      "sat_vocabulary": "từ vựng SAT",
+      "ielts_vocabulary": "từ vựng IELTS",
+      "6th_grade_vocabulary": "từ vựng lớp 6",
+      "7th_grade_vocabulary": "từ vựng lớp 7",
+      "8th_grade_vocabulary": "từ vựng lớp 8",
+      "9th_grade_vocabulary": "từ vựng lớp 9",
+      "10th_grade_vocabulary": "từ vựng lớp 10",
+      "11th_grade_vocabulary": "từ vựng lớp 11",
+      "12th_grade_vocabulary": "từ vựng lớp 12"
+    },
+    "game": {
+      "message_success": "chúc mừng bạn đã vượt qua trò chơi này",
+      "message_error": "rất tiếc bạn chưa việt qua trò chơi này",
+      "exit": "thoát",
+      "vocabulary_game_match_english_vs_vietnamese": "trò chơi kết hợp từ bằng định nghĩa",
+      "vocabulary_game_match_english_vs_image": "trò chơi kết hợp từ bằng hình ảnh",
+      "vocabulary_game_memory_english_vs_vietnamese": "trò chơi trí nhớ bằng định nghĩa",
+      "vocabulary_game_memory_english_vs_image": "trò chơi trí nhớ bằng hình ảnh",
+      "revival": "hồi sinh"
+    },
+    "practice": {
+      "next": "tiếp theo",
+      "check": "kiểm tra",
+      "complete": "bạn đã hoàn thành việc luyện tập",
+      "free_practice": "luyện tập tự do"
+    },
+    "common": {
+      "practice": "luyện tập",
+      "game": "trò chơi",
+      "list": "danh sách",
+      "flashcard": "thẻ",
+      "oxford_5000": {
+        "a1": "A1",
+        "a2": "A2",
+        "b1": "B1",
+        "b2": "B2",
+        "c1": "C1"
+      }
+    }
+  },
+  "writing": {
+    "label": {
+      "essays": "bài luận",
+      "dictation_by_level": "viết chính tả theo cấp độ",
+      "dictation_by_topic": "viết chính tả theo chủ đề"
+    },
+    "essays": {
+      "lv1": "cấp độ 1",
+      "lv2": "cấp độ 2",
+      "lv3": "cấp độ 3"
+    }
+  },
+  "dictionary": {
+    "label": {
+      "download_dic": "tải bộ từ điển",
+      "status_get_dic_downloading": "đang tải bộ từ điển",
+      "status_get_dic_download_error": "tải bộ từ điển thất bại",
+      "status_get_dic_download_success": "tải bộ từ điển thành công",
+      "status_get_dic_extracting": "đang giải nén bộ từ điển",
+      "status_get_dic_extract_error": "giải nén bộ từ điển thất bại",
+      "status_get_dic_extract_success": "giải nén bộ từ điển thành công",
+      "history_word": "lịch sử tra từ",
+      "description": "Bộ từ điển anh-việt bao gồm khoảng 500000 từ và cụm từ"
+    }
+  },
+  "app_info": {
+    "label": {
+      "welcome": "Xin chào! Tôi là Trần Đình Thắng.",
+      "info": "cải thiện kỹ năng tiếng anh mỗi ngày",
+      "mailToMessage": "Nếu bạn có bất cứ phản hồi gì! Xin hãy liên hệ với chúng tôi qua email",
+      "email": "trandinhthang99.hy@gmail.com"
+    }
+  },
+  "video": {
+    "label": {
+      "title_relation": "các video liên quan",
+      "status_get_video_downloading": "đang tải tệp dữ liệu video",
+      "status_get_video_download_error": "tải tệp dữ liệu video thất bại",
+      "status_get_video_download_success": "tải tệp dữ liệu video thành công",
+      "status_get_video_extracting": "đang giải nén dữ liệu video",
+      "status_get_video_extract_error": "giải nén dữ liệu video thất bại",
+      "status_get_video_extract_success": "giải nén dữ liệu video thành công",
+      "home": "trang chủ",
+      "download_video_data": "ải tệp dữ liệu video"
+    }
+  },
+  "reading": {
+    "label": {
+      "reading_audio_level": "bài đọc theo cấp độ với audio",
+      "reading_comprehension": "đọc hiểu",
+      "reading_scrambled": "bài tập sắp xếp",
+      "your_answer": "câu trả lời của bạn",
+      "correct_answer": "đáp án chính xác"
+    }
+  },
+  "speaking": {
+    "label": {
+      "speaking_conversation_level": "bài nói hội thoại theo cấp độ",
+      "speaking_phonetics": "ngữ âm",
+      "speaking_structure_common": "cấu trúc nói phổ thông"
+    },
+    "phonetic": {
+      "label": {
+        "video_tutorial": "video hướng dẫn",
+        "examples": "ví dụ",
+        "lessons": "bài học",
+        "exercises": "bài tập"
+      }
+    }
+  },
+  "listening": {
+    "label": {
+      "listening_conversation": "nghe đoạn hội thoại",
+      "listening_short_talk": "nghe bài nói ngắn",
+      "listening_photograph": "nghe với ảnh",
+      "listening_comprehension_level": "nghe hiểu theo cấp độ"
+    }
+  },
+  "modal_setting": {
+    "settings": "cài đặt",
+    "theme": "chủ đề",
+    "language": "ngôn ngữ",
+    "lookup": "tra từ",
+    "lookup_audio": "tra từ với âm thanh",
+    "content_size": "kích cỡ"
+  },
+  "group": {
+    "my_group": "My Vocabulary Group",
+    "oxford_topic": "Topic Dictionaries Vocabulary",
+    "oxford_3000": "The Oxford 3000 Vocabulary",
+    "oxford_5000": "The Oxford 5000 Vocabulary",
+    "500_toefl": "500 TOEFL Vocabulary",
+    "600_ielts": "600 IELTS Vocabulary",
+    "1200_toeic": "1200 TOEIC Vocabulary",
+    "2100_sat": "2100 SAT Vocabulary",
+    "600_beginners": "600 Beginners Vocabulary",
+    "600_intermediates_1": "600 Intermediate 1 Vocabulary",
+    "600_intermediates_2": "600 Intermediate 2 Vocabulary",
+    "600_high_intermediate": "600 High Intermediate Vocabulary",
+    "600_low_advanced": "600 Low Advanced Vocabulary",
+    "600_advanced": "600 Advanced Vocabulary",
+    "1000_common": "1000 Common Vocabulary",
+    "1700_business": "1700 Business Vocabulary",
+    "2800_written": "2800 Written Vocabulary",
+    "3000_spoken": "3000 Spoken Vocabulary",
+    "kindergarten": "Kindergarten Vocabulary",
+    "grade_1": "First Grade Vocabulary",
+    "grade_2": "Second Grade Vocabulary",
+    "grade_3": "Third Grade Vocabulary",
+    "grade_4": "Fourth Grade Vocabulary",
+    "grade_5": "Fifth Grade Vocabulary",
+    "grade_6": "Sixth Grade Vocabulary",
+    "grade_7": "Seventh Grade Vocabulary",
+    "grade_8": "Eighth Grade Vocabulary",
+    "grade_9": "Ninth Grade Vocabulary",
+    "grade_10_basic": "Tenth Grade Basic Vocabulary",
+    "grade_10_advanced": "Tenth Grade Advanced Vocabulary",
+    "grade_11_basic": "Eleventh Grade Basic Vocabulary",
+    "grade_11_advanced": "Eleventh Grade Advanced Vocabulary",
+    "grade_12_basic": "Twelfth Grade Basic Vocabulary",
+    "grade_12_advanced": "Twelfth Grade Advanced Vocabulary"
+  },
+  "welcome": {
+    "continue": "continue",
+    "slogan": "học từ vựng như những chú kiến"
+  },
+  "myGroup": {
+    "newGroup": "tạo bộ từ mới"
+  }
+}
