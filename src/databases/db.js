@@ -1,21 +1,13 @@
 import SQLite from 'react-native-sqlite-storage';
 import {
     DATABASE_NAME,
-    MAX_LIMIT_DB, TABLE_NAME_MY_PLAYLIST, TABLE_NAME_TRACK,
+    MAX_LIMIT_DB, randomRange, TABLE_NAME_MY_PLAYLIST, TABLE_NAME_TRACK,
 } from '../utils/constants';
 
 const db = SQLite.openDatabase({
     name: DATABASE_NAME,
 });
 
-// const TABLE_LISTENING = 'antlistening';
-// const db = SQLite.openDatabase({
-//     name: 'antlistening.db',
-//     createFromLocation : 1
-// });
-
-// TABLE_TRACK_HISTORY
-// TABLE_TRACK_ANSWER
 db.transaction((tx) => {
     tx.executeSql(
         'CREATE TABLE IF NOT EXISTS '
@@ -42,26 +34,35 @@ db.transaction((tx) => {
         answers TEXT,
         listenAt INTEGER,
         duration INTEGER,
+        liked INTEGER DEFAULT 0,
+        likedAt INTEGER
         );`,
+        [],
+        () => {
+
+        },
+        (err) => {
+            console.log(err)
+        }
     );
 });
 
 
-export const getAllMyGroup = () => new Promise((resolve, reject) => {
+export const getAllMyPlaylist = () => new Promise((resolve, reject) => {
     db.transaction(tx => {
         tx.executeSql(
-            `SELECT * FROM ${TABLE_NAME_MY_GROUP} ORDER BY updatedAt DESC;`,
+            `SELECT * FROM ${TABLE_NAME_MY_PLAYLIST} ORDER BY updatedAt DESC;`,
             [],
             (tx, results) => {
                 const {rows} = results;
-                let words = [];
+                let playlists = [];
                 for (let i = 0; i < rows.length; i++) {
-                    words.push({
+                    playlists.push({
                         ...rows.item(i),
-                        words: JSON.parse(rows.item(i).words),
+                        tracks: JSON.parse(rows.item(i).tracks),
                     });
                 }
-                resolve(words);
+                resolve(playlists);
             },
             (error) => {
                 reject(error);
@@ -69,17 +70,17 @@ export const getAllMyGroup = () => new Promise((resolve, reject) => {
         );
     });
 });
-export const getMyGroupById = (id) => new Promise((resolve, reject) => {
+export const getMyPlaylistById = (id) => new Promise((resolve, reject) => {
     db.transaction(tx => {
         tx.executeSql(
-            `SELECT * FROM ${TABLE_NAME_MY_GROUP} WHERE id = ?;`,
+            `SELECT * FROM ${TABLE_NAME_MY_PLAYLIST} WHERE id = ?;`,
             [id],
             (tx, results) => {
                 const {rows} = results;
                 if (rows.length) {
                     resolve({
                         ...rows.item(0),
-                        words: JSON.parse(rows.item(0).words),
+                        tracks: JSON.parse(rows.item(0).tracks),
                     })
                 } else {
                     resolve(null);
@@ -91,13 +92,13 @@ export const getMyGroupById = (id) => new Promise((resolve, reject) => {
         );
     });
 });
-export const insertMyGroup = (data) => new Promise((resolve, reject) => {
+export const insertMyPlaylist = (data) => new Promise((resolve, reject) => {
     const {
         name,
     } = data;
     db.transaction(tx => {
         tx.executeSql(
-            `INSERT INTO ${TABLE_NAME_MY_GROUP} (name, words, updatedAt) VALUES (?,?,?);`,
+            `INSERT INTO ${TABLE_NAME_MY_PLAYLIST} (name, tracks, updatedAt) VALUES (?,?,?);`,
             [
                 name,
                 JSON.stringify([]),
@@ -113,9 +114,9 @@ export const insertMyGroup = (data) => new Promise((resolve, reject) => {
         );
     });
 });
-export const updateMyGroupById = (id, data) => new Promise((resolve, reject) => {
+export const updateMyPlaylistById = (id, data) => new Promise((resolve, reject) => {
     data.updatedAt =  new Date().getTime();
-    let fields = ['name', 'words', 'updatedAt']
+    let fields = ['name', 'tracks', 'updatedAt']
     let array = []
     fields.forEach(item => {
         if (data.hasOwnProperty(item)) {
@@ -131,7 +132,7 @@ export const updateMyGroupById = (id, data) => new Promise((resolve, reject) => 
 
     db.transaction(tx => {
         tx.executeSql(
-            `UPDATE ${TABLE_NAME_MY_GROUP} SET ${array.map(item => item.key + " = ?").join(',')} WHERE id = ?`,
+            `UPDATE ${TABLE_NAME_MY_PLAYLIST} SET ${array.map(item => item.key + " = ?").join(',')} WHERE id = ?`,
             [
                 ...array.map(item => item.value),
                 id
@@ -145,10 +146,10 @@ export const updateMyGroupById = (id, data) => new Promise((resolve, reject) => 
         );
     });
 });
-export const deleteMyGroup = (id) => new Promise((resolve, reject) => {
+export const deleteMyPlaylist = (id) => new Promise((resolve, reject) => {
     db.transaction(tx => {
         tx.executeSql(
-            `DELETE FROM ${TABLE_NAME_MY_GROUP} where id=?`,
+            `DELETE FROM ${TABLE_NAME_MY_PLAYLIST} where id = ?`,
             [
                 id
             ],
@@ -163,27 +164,29 @@ export const deleteMyGroup = (id) => new Promise((resolve, reject) => {
 });
 
 
-export const importTracks = (words) => new Promise((resolve, reject) => {
-    const maxSizeInsertConversation = Math.floor(MAX_LIMIT_DB/7);
-    const last = Math.ceil(words.length/maxSizeInsertConversation);
+export const importTracks = (tracks) => new Promise((resolve, reject) => {
+    const maxSizeInsert = Math.floor(MAX_LIMIT_DB/8);
+    const last = Math.ceil(tracks.length/maxSizeInsert);
     for (let p = 1; p < last+1; p = p + 1) {
-        const items = [...words].slice((p - 1) * maxSizeInsertConversation, p * maxSizeInsertConversation);
+        const items = [...tracks].slice((p - 1) * maxSizeInsert, p * maxSizeInsert);
         let data = []
         items.forEach(item => {
             data = [
                 ...data,
                 item.id,
-                item.word,
-                item.pos,
+                item.name,
                 item.level,
-                item.phonetic,
-                item.means,
-                item.context,
+                item.transcript,
+                item.sentences,
+                item.questions,
+                item.answers,
+                // item.duration,
+                randomRange(30, 300)
             ]
         })
         db.transaction((tx) => {
             tx.executeSql(
-                `INSERT INTO ${TABLE_NAME_WORDS} (id, word, pos, level, phonetic, means, context) VALUES ${items.map(itemR => '(?,?,?,?,?,?,?)').join(',')}`,
+                `INSERT INTO ${TABLE_NAME_TRACK} (id, name, level, transcript, sentences, questions, answers, duration) VALUES ${items.map(itemR => '(?,?,?,?,?,?,?,?)').join(',')}`,
                 data,
                 () => {
                     if (p === last) {
@@ -198,31 +201,31 @@ export const importTracks = (words) => new Promise((resolve, reject) => {
     }
 });
 
-export const getWordsByListIds = (ids) => new Promise((resolve, reject) => {
-    const time = new Date().getTime();
-    db.transaction(tx => {
-        tx.executeSql(
-            `SELECT *, (countCheck > 0 AND (? - lastCheckAt)/86400000 < countCheck) AS isKnow FROM ${TABLE_NAME_WORDS} WHERE id IN (${ids.map(item => '?').join(',')});`,
-            [time,...ids],
-            (tx, results) => {
-                const {rows} = results;
-                let words = [];
-                for (let i = 0; i < rows.length; i++) {
-                    words.push({
-                        ...rows.item(i),
-                        phonetic: JSON.parse(rows.item(i).phonetic),
-                        means: JSON.parse(rows.item(i).means),
-                        context: JSON.parse(rows.item(i).context),
-                    });
-                }
-                resolve(words);
-            },
-            (error) => {
-                reject(error);
-            },
-        );
-    });
-});
+// export const getWordsByListIds = (ids) => new Promise((resolve, reject) => {
+//     const time = new Date().getTime();
+//     db.transaction(tx => {
+//         tx.executeSql(
+//             `SELECT *, (countCheck > 0 AND (? - lastCheckAt)/86400000 < countCheck) AS isKnow FROM ${TABLE_NAME_WORDS} WHERE id IN (${ids.map(item => '?').join(',')});`,
+//             [time,...ids],
+//             (tx, results) => {
+//                 const {rows} = results;
+//                 let words = [];
+//                 for (let i = 0; i < rows.length; i++) {
+//                     words.push({
+//                         ...rows.item(i),
+//                         phonetic: JSON.parse(rows.item(i).phonetic),
+//                         means: JSON.parse(rows.item(i).means),
+//                         context: JSON.parse(rows.item(i).context),
+//                     });
+//                 }
+//                 resolve(words);
+//             },
+//             (error) => {
+//                 reject(error);
+//             },
+//         );
+//     });
+// });
 export const getRandomTracks = (nbTracks) => new Promise((resolve, reject) => {
     // console.log(db)
     db.transaction(tx => {
@@ -330,6 +333,61 @@ export const getDataByQueryAndPaginate = (page, query, pageSize) => new Promise(
     });
 });
 
+export const updateLiked = (id, liked) => new Promise((resolve, reject) => {
+    const time = new Date().getTime();
+    db.transaction(tx => {
+        tx.executeSql(
+            `UPDATE ${TABLE_NAME_TRACK} SET liked = ?, likedAt = ? WHERE id = ?`,
+            [
+                liked ? 1 : 0,
+                liked ? time : 0,
+                id
+            ],
+            (tx, results) => {
+                resolve(results);
+            },
+            (error) => {
+                reject(error);
+            },
+        );
+    });
+});
+
+export const getTracksByQueryAndPaginateAndFilters = (page, query, pageSize, filters) => new Promise((resolve, reject) => {
+    const text = query.trim().toLowerCase();
+    const time = new Date().getTime();
+    db.transaction(async (tx) => {
+        tx.executeSql(
+            `SELECT * FROM ${TABLE_NAME_TRACK} 
+            WHERE name REGEXP ?
+            ${filters.liked !== undefined ? 'AND liked = ?' : ''}
+--             ORDER BY level ASC
+            ${filters.liked !== undefined ? 'ORDER BY likedAt DESC' : ''}
+            LIMIT ?, ? `,
+            [
+                `^(|.* +)${text}.*`,
+                ...(filters.liked !== undefined ? [filters.liked] : []),
+                pageSize * (page - 1),
+                pageSize
+            ],
+            (tx, results) => {
+                const {rows} = results;
+                let words = [];
+                for (let i = 0; i < rows.length; i++) {
+                    words.push({
+                        ...rows.item(i),
+                        sentences: JSON.parse(rows.item(i).sentences),
+                        questions: JSON.parse(rows.item(i).questions),
+                    });
+                }
+                resolve(words);
+            },
+            (error) => {
+                reject(error);
+            },
+        );
+    });
+});
 
 export default db;
 

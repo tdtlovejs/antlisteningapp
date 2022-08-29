@@ -2,14 +2,14 @@ import React, {useContext, useState} from 'react';
 import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Input from '../../../themes/Input';
 import {COLOR_BASIC_1, COLOR_GREEN, COLOR_MODAL, COLOR_WHITE} from '../../../utils/colors';
-import {insertMyGroup} from '../../../databases/db';
+import {insertMyPlaylist} from '../../../databases/db';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {useTranslation} from "react-i18next";
-import {MyGroupContext} from "./contexts/MyGroupContext";
-const ModalMyGroupNew = (props) => {
+import {MyPlaylistContext} from "./contexts/MyPlaylistContext";
+const ModalMyPlaylistNew = (props) => {
     const {
-        getMyGroups
-    } = useContext(MyGroupContext);
+        getMyPlaylists
+    } = useContext(MyPlaylistContext);
     const {
         group,
         onClose,
@@ -19,11 +19,11 @@ const ModalMyGroupNew = (props) => {
 
     const onSave = () => {
         if (name.trim() !== "") {
-            insertMyGroup({
+            insertMyPlaylist({
                 name: name,
             })
                 .then(res => {
-                    getMyGroups();
+                    getMyPlaylists();
                     onClose();
                 })
                 .catch(err => {
@@ -58,12 +58,12 @@ const ModalMyGroupNew = (props) => {
                     </TouchableOpacity>
                     <View style={styles.header}>
                         <Text style={styles.newGroupText}>
-                            {t('myGroup.newGroup')}
+                            new playlist
                         </Text>
                     </View>
                     <View style={styles.body}>
                         <Input
-                            placeholder={t('myGroup.groupName')}
+                            placeholder={'name'}
                             value={name}
                             onChangeText={(text) => {
                                 setName(text)
@@ -87,7 +87,7 @@ const ModalMyGroupNew = (props) => {
                                 color={COLOR_WHITE}
                             />
                             <Text style={styles.saveBtnText}>
-                                {t('myGroup.save')}
+                                {'save'}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -97,7 +97,7 @@ const ModalMyGroupNew = (props) => {
     )
 }
 
-export default ModalMyGroupNew;
+export default ModalMyPlaylistNew;
 
 const styles = StyleSheet.create({
     modalWrapper: {

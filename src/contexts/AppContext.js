@@ -33,20 +33,18 @@ const AppContextProvider = ({children}) => {
     const [lang, setLang] = useState(null);
     const [isConnectedInternet, setIsConnectedInternet] = useState(true);
     const [noAds, setNoAds] = useState(NO_ADS);
-    const [dbDic, setDic] = useState(null);
+    const [db, setDic] = useState(null);
     const [settings, setSettings] = useState(null);
-    const [dicDone, setDicDone] = useState(null);
+    const [dbDone, setDbDone] = useState(null);
 
     const [loadingSettings, setLoadingSettings] = useState(false);
     const [loadingOpenAd, setLoadingOpenAd] = useState(true);
-    const [loadingDicDone, setLoadingDicDone] = useState(false);
+    const [loadingDbDone, setLoadingDbDone] = useState(false);
 
     const [appData, setAppData] = useState({
         playlist: [],
         track: null
     })
-    // const [playlist, setPlaylist] = useState([]);
-    // const [track, setTrack] = useState(null);
 
 
     useEffect(() => {
@@ -56,6 +54,7 @@ const AppContextProvider = ({children}) => {
     }, [isConnectedInternet])
     useEffect(() => {
         getSettingsFromStorage();
+        getDbDoneFromStorage();
     }, [])
     const getSettingsFromStorage = async () => {
         try {
@@ -82,27 +81,27 @@ const AppContextProvider = ({children}) => {
         saveSettingsToStorage(settings)
     }, [settings])
 
-    const getDicDoneFromStorage = async () => {
+    const getDbDoneFromStorage = async () => {
         try {
             const result = await AsyncStorage.getItem(KEY_STORAGE_DIC_DONE);
             if (result) {
-                setDicDone(result);
+                setDbDone(result);
             }
-            setLoadingDicDone(true);
+            setLoadingDbDone(true);
         } catch (e) {
-            setLoadingDicDone(true);
+            setLoadingDbDone(true);
         }
     }
-    const saveDicDoneToStorage = async (dicDone) => {
-        if (dicDone) {
-            await AsyncStorage.setItem(KEY_STORAGE_DIC_DONE, dicDone);
+    const saveDbDoneToStorage = async (dbDone) => {
+        if (dbDone) {
+            await AsyncStorage.setItem(KEY_STORAGE_DIC_DONE, dbDone);
         } else {
-            await AsyncStorage.removeItem(KEY_STORAGE_DIC_DONE);
+            // await AsyncStorage.removeItem(KEY_STORAGE_DIC_DONE);
         }
     }
     useEffect(() => {
-        saveDicDoneToStorage(dicDone)
-    }, [dicDone])
+        saveDbDoneToStorage(dbDone)
+    }, [dbDone])
 
 
     useEffect(() => {
@@ -136,12 +135,13 @@ const AppContextProvider = ({children}) => {
         })
     }
 
-    const onDownloadDic = (langCode) => {
-        const googleDriveDicDBId = WORDS_ID[langCode];
+    const onDownloadDic = () => {
+        const googleDriveDicDBId = '1TFUvr9cm3PlZDj9e99Vi8e1mZ7sMhm7X';
         const link = `https://drive.google.com/uc?export=view&id=${googleDriveDicDBId}&confirm=t`;
+        console.log(link)
         const {config, fs} = RNFetchBlob;
-        const path = `${RNFS.ExternalDirectoryPath}/antvoca/words/${langCode}.zip`;
-        const pathDbFile = RNFS.ExternalDirectoryPath + `/antvoca/words`;
+        const path = `${RNFS.ExternalDirectoryPath}/antlistening.zip`;
+        const pathDbFile = RNFS.ExternalDirectoryPath;
         let options = {
             fileCache: true,
             addAndroidDownloads: {
@@ -151,39 +151,42 @@ const AppContextProvider = ({children}) => {
                 description: 'Downloading'
             }
         }
+        console.log(options)
         fs.exists(path).then(async isExist => {
+            console.log(isExist)
             if (!isExist) {
                 config(options)
                     .fetch('POST', link)
                     .then(async (res) => {
-                        unZipDbFile(path, pathDbFile, langCode)
+                        console.log('AAAAAa')
+                        unZipDbFile(path, pathDbFile)
                     })
                     .catch(err => {
                     })
             } else {
-                unZipDbFile(path, pathDbFile, langCode)
+                unZipDbFile(path, pathDbFile)
             }
         })
     }
 
-    const unZipDbFile = (path, pathDbFile, langCode) => {
+    const unZipDbFile = (path, pathDbFile) => {
         unzip(path, pathDbFile)
             .then((path) => {
-                openDBWords(langCode);
-                RNFS.unlink(`${RNFS.ExternalDirectoryPath}/antenglish/db.zip`)
+                openDBWords();
+                RNFS.unlink(`${RNFS.ExternalDirectoryPath}/antlistening.zip`)
             })
             .catch((error) => {
-                RNFS.unlink(`${RNFS.ExternalDirectoryPath}/antenglish/db.zip`)
+                RNFS.unlink(`${RNFS.ExternalDirectoryPath}/antlistening.zip`)
             })
     }
-    const openDBWords = (langCode) => {
+    const openDBWords = () => {
         RNFS.copyFile(
-            `${RNFS.ExternalDirectoryPath}/antvoca/words/${langCode}.db`,
-            `${RNFetchBlob.fs.dirs.MainBundleDir}/databases/${langCode}.sqlite3`
+            `${RNFS.ExternalDirectoryPath}/antlistening.db`,
+            `${RNFetchBlob.fs.dirs.MainBundleDir}/databases/antlistening.sqlite3`
         )
             .then(res => {
                 setDic(SQLite.openDatabase({
-                        name : `${langCode}.sqlite3`,
+                        name : `antlistening.sqlite3`,
                         createFromLocation : 1,
                         readOnly: true,
                     },
@@ -199,25 +202,26 @@ const AppContextProvider = ({children}) => {
 
             })
     }
+    console.log('db && loadingDbDone && DbDone !== DONE ',dbDone)
 
     useEffect(() => {
-        if (lang && dbDic && loadingDicDone && dicDone !== DONE) {
+        if (db && loadingDbDone && dbDone !== DONE) {
             try {
-                dbDic.transaction(async (tx) => {
+                db.transaction(async (tx) => {
                     tx.executeSql(
-                        `SELECT * FROM words`,
+                        `SELECT * FROM antlistening`,
                         [],
                         (tx, results) => {
                             const arr = new Array(results.rows.length).fill(0);
+                            console.log('arr ', arr.length)
                             let items = arr.map((item, index) => {
                                 return results.rows.item(index);
                             })
                             console.log('items ',items.length)
                             importTracks(items)
                                 .then(res => {
-                                    RNFS.unlink(`${RNFS.ExternalDirectoryPath}/antvoca/words/${lang.code}.db`)
-                                    setLoadingInitial(false);
-                                    setDicDone(DONE);
+                                    // RNFS.unlink(`${RNFS.ExternalDirectoryPath}/antlistening.db`)
+                                    setDbDone(DONE);
                                 })
                                 .catch(err => {
                                     console.log(err)
@@ -233,16 +237,18 @@ const AppContextProvider = ({children}) => {
             }
         } else {
         }
-    }, [dbDic])
+    }, [db])
+
+    useEffect(() => {
+        onDownloadDic();
+    }, [])
 
 
     const appContextData = {
         lang,
         setLang,
-        dbDic,
+        db,
         setDic,
-        loadingInitial,
-        setLoadingInitial,
         noAds,
         isConnectedInternet,
         setIsConnectedInternet,
@@ -254,7 +260,8 @@ const AppContextProvider = ({children}) => {
         appData,
         setAppData,
         addTrackToPlaylist,
-        onResetPlaylist
+        onResetPlaylist,
+        dbDone
     }
     return (
         <AppContext.Provider value={appContextData}>

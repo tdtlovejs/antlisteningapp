@@ -1,10 +1,11 @@
 import {StyleSheet, Animated, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import {COLOR_BASIC_1, COLOR_BASIC_2, COLOR_BASIC_2_OPACITY} from '../../utils/colors';
-import {getRandomTracks} from '../../databases/db';
-import Loading from '../../themes/Loading';
-import {WINDOW_WIDTH} from '../../utils/constants';
+import {COLOR_BASIC_1, COLOR_BASIC_2, COLOR_BASIC_2_OPACITY} from '../../../utils/colors';
+import {getRandomTracks} from '../../../databases/db';
+import Loading from '../../../themes/Loading';
+import {WINDOW_WIDTH} from '../../../utils/constants';
+import TrackItem from '../../TrackItem';
 
 const groups = [
     [0,1],
@@ -15,6 +16,7 @@ const groups = [
 ]
 const TrackRandom = (props) => {
     // const [groups, setGroups] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [tracks, setTracks] = useState([]);
     let xOffset = new Animated.Value(0);
     const onScroll = Animated.event(
@@ -24,11 +26,24 @@ const TrackRandom = (props) => {
 
 
     useEffect(() => {
+        getTracks()
+    }, [])
+
+    const onRefresh = () => {
+        getTracks()
+    }
+
+    const getTracks = () => {
+        setLoading(true)
         getRandomTracks(10)
             .then(res => {
                 setTracks(res);
+                setLoading(false)
             })
-    }, [])
+            .catch(err => {
+                setLoading(false)
+            })
+    }
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -36,7 +51,7 @@ const TrackRandom = (props) => {
                     random track
                 </Text>
                 <TouchableOpacity onPress={() => {
-
+                    onRefresh()
                 }}>
                     <IonIcon
                         name={'refresh'}
@@ -47,7 +62,7 @@ const TrackRandom = (props) => {
             </View>
             <View style={styles.content}>
                 {
-                    tracks.length === 10
+                    (tracks.length === 10 && !loading)
                     ?
                         <Animated.ScrollView
                             scrollEventThrottle={16}
@@ -64,14 +79,9 @@ const TrackRandom = (props) => {
                                             {
                                                 itemG.map((item, index) => {
                                                     return (
-                                                        <TouchableOpacity style={styles.track}>
-                                                            <Text
-                                                                style={styles.trackNameText}
-                                                                numberOfLines={2}
-                                                            >
-                                                                {tracks[item].name}
-                                                            </Text>
-                                                        </TouchableOpacity>
+                                                        <TrackItem
+                                                            track={tracks[item]}
+                                                        />
                                                     )
                                                 })
                                             }
@@ -115,15 +125,5 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 10
     },
-    track: {
-        paddingVertical: 10,
-        paddingHorizontal: 10,
-        backgroundColor: COLOR_BASIC_2_OPACITY(0.1),
-        marginBottom: 10,
-        borderRadius: 15,
-        height: 60,
-    },
-    trackNameText: {
-        color: COLOR_BASIC_1,
-    }
+
 })

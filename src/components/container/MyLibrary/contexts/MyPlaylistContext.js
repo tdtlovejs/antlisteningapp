@@ -1,61 +1,62 @@
 import React from 'react';
 import {createContext, useEffect, useState} from 'react';
-import {getAllMyGroup, getWordsByListIds} from "../../../../databases/db";
+import {getAllMyPlaylist, getWordsByListIds} from "../../../../databases/db";
 
-export const MyGroupContext = createContext({});
+export const MyPlaylistContext = createContext({});
 
-const MyGroupContextProvider = ({children}) => {
-    const [myGroups, setMyGroups] = useState([]);
-    const [wordsByMyGroup, setWordsByMyGroup] = useState([]);
-    const [myGroup, setMyGroup] = useState(null);
-    const [loadingMyGroups, setLoadingMyGroups] = useState(true);
-    const [loadingMyGroup, setLoadingMyGroup] = useState(false);
+const MyPlaylistContextProvider = ({children}) => {
+    const [myPlaylists, setMyPlaylists] = useState([]);
+    const [wordsByMyPlaylist, setWordsByMyPlaylist] = useState([]);
+    const [myPlaylist, setMyPlaylist] = useState(null);
+    const [loadingMyPlaylists, setLoadingMyPlaylists] = useState(true);
+    const [loadingMyPlaylist, setLoadingMyPlaylist] = useState(false);
     useEffect(() => {
-        if (Array.isArray(myGroup?.words)) {
-            setLoadingMyGroup(true);
-            getWordsByListIds(myGroup.words)
-                .then(res => {
-                    setWordsByMyGroup(res);
-                    setLoadingMyGroup(false);
-
-                })
-                .catch(err => {
-                    setLoadingMyGroup(false);
-                })
+        if (Array.isArray(myPlaylist?.words)) {
+            setLoadingMyPlaylist(true);
+            // getWordsByListIds(MyPlaylist.words)
+            //     .then(res => {
+            //         setWordsByMyPlaylist(res);
+            //         setLoadingMyPlaylist(false);
+            //
+            //     })
+            //     .catch(err => {
+            //         setLoadingMyPlaylist(false);
+            //     })
         } else {
-            setWordsByMyGroup([]);
+            setWordsByMyPlaylist([]);
         }
-    }, [myGroup])
+    }, [myPlaylist])
 
 
 
-    const getMyGroups = () => {
-        getAllMyGroup()
+    const getMyPlaylists = () => {
+        setLoadingMyPlaylists(true);
+        getAllMyPlaylist()
             .then(res => {
-                setMyGroups(res);
-                setLoadingMyGroups(false);
+                setMyPlaylists(res);
+                setLoadingMyPlaylists(false);
             })
             .catch(err => {
-                setLoadingMyGroups(false)
+                setLoadingMyPlaylists(false)
             })
     }
 
 
     const HomeContextData = {
-        myGroups,
-        setMyGroups,
-        getMyGroups,
-        wordsByMyGroup,
-        myGroup,
-        setMyGroup,
-        loadingMyGroups,
-        loadingMyGroup
+        myPlaylists,
+        setMyPlaylists,
+        getMyPlaylists,
+        wordsByMyPlaylist,
+        myPlaylist,
+        setMyPlaylist,
+        loadingMyPlaylists,
+        loadingMyPlaylist
     }
     return (
-        <MyGroupContext.Provider value={HomeContextData}>
+        <MyPlaylistContext.Provider value={HomeContextData}>
             {children}
-        </MyGroupContext.Provider>
+        </MyPlaylistContext.Provider>
     )
 }
 
-export default MyGroupContextProvider;
+export default MyPlaylistContextProvider;

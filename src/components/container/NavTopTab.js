@@ -1,33 +1,67 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import TabHome from './TabHome';
 import TabLiked from './TabLiked';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import {COLOR_BASIC_1, COLOR_BASIC_2, COLOR_WHITE, WHITE} from '../utils/colors';
+import {COLOR_BASIC_1, COLOR_BASIC_2, COLOR_WHITE, WHITE} from '../../utils/colors';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import TabMyLibrary from './TabMyLibrary';
+import MyPlaylistContextProvider from './MyLibrary/contexts/MyPlaylistContext';
+import {AppContext} from '../../contexts/AppContext';
 
 const Tab = createBottomTabNavigator();
 
 const NavTopTab = (props) => {
+    const {
+        appData,
+        setAppData,
+        dbDone
+    } = useContext(AppContext);
+    const {
+        track
+    } = appData;
+    console.log(track)
+
+    const showTabScreen = (component) => {
+        return (
+            <View style={[
+                styles.tabScreen,
+                track ? styles.tabScreenWithPlayer : {}
+            ]}>
+                {component}
+            </View>
+        )
+    }
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Image
-                    source={require('./../assets/images/ant.png')}
+                    source={require('../../assets/images/ant.png')}
                     style={styles.logoImg}
                 />
             </View>
-            <View style={styles.body}>
+            <View style={[
+                styles.body,
+                track ? styles.bodyWithPlayer : {}
+            ]}>
                 <Tab.Navigator
                     headerShown={false}
                 >
                     <Tab.Screen
                         name="home"
-                        component={TabHome}
+                        component={(props) => {
+                            return (
+                                <View style={[
+                                    styles.tabScreen,
+                                    track ? styles.tabScreenWithPlayer : {}
+                                ]}>
+                                    <TabHome {...props}/>
+                                </View>
+                            )
+                        }}
                         options={{
                             tabBarIcon: ({ route, focused, color }) => {
                                 return (
@@ -45,7 +79,18 @@ const NavTopTab = (props) => {
                     />
                     <Tab.Screen
                         name="mylibrary"
-                        component={TabMyLibrary}
+                        component={(props) => {
+                            return (
+                                <View style={[
+                                    styles.tabScreen,
+                                    track ? styles.tabScreenWithPlayer : {}
+                                ]}>
+                                    <MyPlaylistContextProvider>
+                                        <TabMyLibrary {...props}/>
+                                    </MyPlaylistContextProvider>
+                                </View>
+                            )
+                        }}
                         options={{
                             tabBarIcon: ({ route, focused, color }) => {
                                 return (
@@ -62,7 +107,16 @@ const NavTopTab = (props) => {
                     />
                     <Tab.Screen
                         name="liked"
-                        component={TabLiked}
+                        component={(props) => {
+                            return (
+                                <View style={[
+                                    styles.tabScreen,
+                                    track ? styles.tabScreenWithPlayer : {}
+                                ]}>
+                                    <TabLiked {...props}/>
+                                </View>
+                            )
+                        }}
                         options={{
                             tabBarIcon: ({ route, focused, color }) => {
                                 return (
@@ -93,6 +147,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: COLOR_WHITE,
+    },
+    tabScreen: {
+
+    },
+    tabScreenWithPlayer: {
+        paddingBottom: 60
     },
     header: {
         flexDirection: 'row',

@@ -5,11 +5,12 @@ import {AppContext} from '../contexts/AppContext';
 import Loading from '../themes/Loading';
 import {useTranslation} from "react-i18next";
 import OpenAdCustom from '../themes/AdsCustom/OpenAdCustom';
-import TabHome from './TabHome';
+import TabHome from './container/TabHome';
 import TrackPlayer from './TrackPlayer';
 import TrackPlayApp from './TrackPlayer/TrackPlayApp';
-import TrackPage from './NavTopTab';
-import NavTopTab from './NavTopTab';
+import TrackPage from './container/NavTopTab';
+import NavTopTab from './container/NavTopTab';
+import {DONE} from '../utils/constants';
 const Stack = createStackNavigator()
 
 
@@ -23,16 +24,19 @@ const NavContainer = (props) => {
     const {
         appData,
         setAppData,
+        dbDone
     } = useContext(AppContext);
     const {
         track
     } = appData;
+    console.log('dbDic ',dbDone)
     if (
         !loadingOpenAd
+        || dbDone !== DONE
     ) {
         return (
             <View style={styles.container}>
-                {isConnectedInternet && <OpenAdCustom />}
+                {(isConnectedInternet && !loadingOpenAd) && <OpenAdCustom />}
                 <Image
                     style={styles.logoImg}
                     source={require('./../assets/images/ant.png')}
@@ -69,7 +73,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     homeWithPlayer: {
-        marginBottom: 60
+        // marginBottom: 60
     },
     home: {
         flex: 1,

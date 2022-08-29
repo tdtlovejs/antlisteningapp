@@ -72,8 +72,8 @@ export const ROUTE_STACK_REMIND_WORDS_PAGE = 'remind_words_page';
 export const ROUTE_STACK_KNOW_WORDS_PAGE = 'know_words_page';
 
 
-export const DATABASE_NAME = 'antlistening'
-export const TABLE_NAME_TRACK = 'track';
+export const DATABASE_NAME = 'test'
+export const TABLE_NAME_TRACK = 'tracks';
 export const TABLE_NAME_MY_PLAYLIST = 'myplaylist';
 
 export const TABLE_NAME_GAMING_HIGH_SCORE = 'gamingHighScore';
