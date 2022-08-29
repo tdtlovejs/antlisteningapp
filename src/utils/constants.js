@@ -72,9 +72,10 @@ export const ROUTE_STACK_REMIND_WORDS_PAGE = 'remind_words_page';
 export const ROUTE_STACK_KNOW_WORDS_PAGE = 'know_words_page';
 
 
-export const DATABASE_NAME = 'antvoca3'
-export const TABLE_NAME_WORDS = 'words2';
-export const TABLE_NAME_MY_GROUP = 'myGroup';
+export const DATABASE_NAME = 'antlistening'
+export const TABLE_NAME_TRACK = 'track';
+export const TABLE_NAME_MY_PLAYLIST = 'myplaylist';
+
 export const TABLE_NAME_GAMING_HIGH_SCORE = 'gamingHighScore';
 
 export const MAX_SIZE_WORDS_IN_GROUP = 10;

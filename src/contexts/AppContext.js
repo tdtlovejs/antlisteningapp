@@ -3,12 +3,16 @@ import {createContext, useEffect, useState} from 'react';
 import SQLite from 'react-native-sqlite-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
+    DONE, KEY_STORAGE_DIC_DONE,
     KEY_STORAGE_SETTINGS,
     NO_ADS, PHONETIC_AUDIO_US,
 } from '../utils/constants';
 import NetInfo from "@react-native-community/netinfo";
 import {useTranslation} from "react-i18next";
-
+import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
+import {unzip} from 'react-native-zip-archive';
+import {importTracks} from '../databases/db';
 
 export const AppContext = createContext({});
 
@@ -31,11 +35,11 @@ const AppContextProvider = ({children}) => {
     const [noAds, setNoAds] = useState(NO_ADS);
     const [dbDic, setDic] = useState(null);
     const [settings, setSettings] = useState(null);
+    const [dicDone, setDicDone] = useState(null);
 
-
-    const [loadingInitial, setLoadingInitial] = useState(false);
     const [loadingSettings, setLoadingSettings] = useState(false);
     const [loadingOpenAd, setLoadingOpenAd] = useState(true);
+    const [loadingDicDone, setLoadingDicDone] = useState(false);
 
     const [appData, setAppData] = useState({
         playlist: [],
@@ -78,6 +82,28 @@ const AppContextProvider = ({children}) => {
         saveSettingsToStorage(settings)
     }, [settings])
 
+    const getDicDoneFromStorage = async () => {
+        try {
+            const result = await AsyncStorage.getItem(KEY_STORAGE_DIC_DONE);
+            if (result) {
+                setDicDone(result);
+            }
+            setLoadingDicDone(true);
+        } catch (e) {
+            setLoadingDicDone(true);
+        }
+    }
+    const saveDicDoneToStorage = async (dicDone) => {
+        if (dicDone) {
+            await AsyncStorage.setItem(KEY_STORAGE_DIC_DONE, dicDone);
+        } else {
+            await AsyncStorage.removeItem(KEY_STORAGE_DIC_DONE);
+        }
+    }
+    useEffect(() => {
+        saveDicDoneToStorage(dicDone)
+    }, [dicDone])
+
 
     useEffect(() => {
         NetInfo.addEventListener(async state => {
@@ -109,6 +135,107 @@ const AppContextProvider = ({children}) => {
             track: null
         })
     }
+
+    const onDownloadDic = (langCode) => {
+        const googleDriveDicDBId = WORDS_ID[langCode];
+        const link = `https://drive.google.com/uc?export=view&id=${googleDriveDicDBId}&confirm=t`;
+        const {config, fs} = RNFetchBlob;
+        const path = `${RNFS.ExternalDirectoryPath}/antvoca/words/${langCode}.zip`;
+        const pathDbFile = RNFS.ExternalDirectoryPath + `/antvoca/words`;
+        let options = {
+            fileCache: true,
+            addAndroidDownloads: {
+                useDownloadManager: true,
+                notification: false,
+                path: path,
+                description: 'Downloading'
+            }
+        }
+        fs.exists(path).then(async isExist => {
+            if (!isExist) {
+                config(options)
+                    .fetch('POST', link)
+                    .then(async (res) => {
+                        unZipDbFile(path, pathDbFile, langCode)
+                    })
+                    .catch(err => {
+                    })
+            } else {
+                unZipDbFile(path, pathDbFile, langCode)
+            }
+        })
+    }
+
+    const unZipDbFile = (path, pathDbFile, langCode) => {
+        unzip(path, pathDbFile)
+            .then((path) => {
+                openDBWords(langCode);
+                RNFS.unlink(`${RNFS.ExternalDirectoryPath}/antenglish/db.zip`)
+            })
+            .catch((error) => {
+                RNFS.unlink(`${RNFS.ExternalDirectoryPath}/antenglish/db.zip`)
+            })
+    }
+    const openDBWords = (langCode) => {
+        RNFS.copyFile(
+            `${RNFS.ExternalDirectoryPath}/antvoca/words/${langCode}.db`,
+            `${RNFetchBlob.fs.dirs.MainBundleDir}/databases/${langCode}.sqlite3`
+        )
+            .then(res => {
+                setDic(SQLite.openDatabase({
+                        name : `${langCode}.sqlite3`,
+                        createFromLocation : 1,
+                        readOnly: true,
+                    },
+                    (res => {
+                        console.log('res ',res)
+
+                    }),
+                    (err =>{
+                        console.log('err ',err)
+                    })))
+            })
+            .catch(err => {
+
+            })
+    }
+
+    useEffect(() => {
+        if (lang && dbDic && loadingDicDone && dicDone !== DONE) {
+            try {
+                dbDic.transaction(async (tx) => {
+                    tx.executeSql(
+                        `SELECT * FROM words`,
+                        [],
+                        (tx, results) => {
+                            const arr = new Array(results.rows.length).fill(0);
+                            let items = arr.map((item, index) => {
+                                return results.rows.item(index);
+                            })
+                            console.log('items ',items.length)
+                            importTracks(items)
+                                .then(res => {
+                                    RNFS.unlink(`${RNFS.ExternalDirectoryPath}/antvoca/words/${lang.code}.db`)
+                                    setLoadingInitial(false);
+                                    setDicDone(DONE);
+                                })
+                                .catch(err => {
+                                    console.log(err)
+                                })
+                        },
+                        err => {
+                            console.log(err);
+                        }
+                    )
+                })
+            } catch (e) {
+                console.log(e);
+            }
+        } else {
+        }
+    }, [dbDic])
+
+
     const appContextData = {
         lang,
         setLang,
