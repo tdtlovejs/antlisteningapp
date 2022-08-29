@@ -7,7 +7,8 @@ import {COLOR_BASIC_1, COLOR_BASIC_2, COLOR_WHITE, WHITE} from '../utils/colors'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import TabMyLibrary from './TabMyLibrary';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,6 +44,23 @@ const NavTopTab = (props) => {
                         }}
                     />
                     <Tab.Screen
+                        name="mylibrary"
+                        component={TabMyLibrary}
+                        options={{
+                            tabBarIcon: ({ route, focused, color }) => {
+                                return (
+                                    <MaterialIcon
+                                        name={focused ? 'my-library-music' : 'my-library-music'}
+                                        color={focused ? COLOR_BASIC_1 : COLOR_BASIC_2}
+                                        size={24}
+                                    />
+                                )
+                            },
+                            tabBarShowLabel: false,
+                            headerShown: false
+                        }}
+                    />
+                    <Tab.Screen
                         name="liked"
                         component={TabLiked}
                         options={{
@@ -59,6 +77,7 @@ const NavTopTab = (props) => {
                             headerShown: false
                         }}
                     />
+
                 </Tab.Navigator>
             </View>
         </View>
