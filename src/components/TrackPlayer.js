@@ -18,6 +18,7 @@ import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import TabTranscript from './TrackPlayer/TabTranscript';
 import TabDisc from './TrackPlayer/TabDisc';
 import TabExercise from './TrackPlayer/TabExercise';
+import TabContainer from './TrackPlayer/TabContainer';
 
 const listUrl = [
     'http://mirrors.standaloneinstaller.com/audio-sample/aac/in.aac',
@@ -25,9 +26,6 @@ const listUrl = [
     'https://www.englishclub.com/efl/wp-content/uploads/2011/12/EnglishClub.com-The-Goblins-Christmas.mp3',
 ]
 
-const TAB_DISC = 'disc';
-const TAB_TRANSCRIPT = 'transcript';
-const TAB_EXERCISE = 'exercise';
 
 const TrackPlayer = (props) => {
     const {
@@ -37,11 +35,11 @@ const TrackPlayer = (props) => {
     const {
         appData,
         setAppData,
+        onResetPlaylist
     } = useContext(AppContext);
     const {
         track
     } = appData;
-    const layout = useWindowDimensions();
 
     const [trackData, setTrackData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -60,70 +58,36 @@ const TrackPlayer = (props) => {
         }
     }, [track])
 
-    const [index, setIndex] = React.useState(0);
-    const [routes] = React.useState([
-        { key: TAB_DISC, title: TAB_DISC },
-        { key: TAB_TRANSCRIPT, title: TAB_TRANSCRIPT },
-        { key: TAB_EXERCISE, title: TAB_EXERCISE },
-    ]);
 
-    const renderScene = SceneMap({
-        [TAB_DISC]: (props) => {
-            return (
-                <TabDisc {...props} trackData={trackData}/>
-            )
-        },
-        [TAB_TRANSCRIPT]: (props) => {
-            return (
-                <TabTranscript {...props} trackData={trackData}/>
-            )
-        },
-        [TAB_EXERCISE]: (props) => {
-            return (
-                <TabExercise {...props} trackData={trackData}/>
-            )
-        },
-    });
 
-    const renderTabBar = props => (
-        <TabBar
-            {...props}
-            indicatorStyle={styles.tabBarIndicatorStyle}
-            style={styles.tabBar}
-            renderIcon={({ route, focused, color }) => {
-                console.log(route)
-                switch (route.key) {
-                    case TAB_DISC:
-                        return (
-                            <IonIcon
-                                name={focused ? 'disc' : 'disc-outline'}
-                                color={focused ? COLOR_BASIC_1 : COLOR_BASIC_2}
-                                size={24}
-                            />
-                        )
-                    case TAB_TRANSCRIPT:
-                        return (
-                            <IonIcon
-                                name={focused ? 'document-text' : 'document-text-outline'}
-                                color={focused ? COLOR_BASIC_1 : COLOR_BASIC_2}
-                                size={24}
-                            />
-                        )
-                    case TAB_EXERCISE:
-                        return (
-                            <MaterialIcon
-                                name={focused ? 'head-question' : 'head-question-outline'}
-                                color={focused ? COLOR_BASIC_1 : COLOR_BASIC_2}
-                                size={24}
-                            />
-                        )
+    const [role, setRole] = useState(null);
+
+    useEffect(() => {
+        if (trackData) {
+            let roleA = Math.ceil((Math.random() * 20));
+            let roleB = null;
+            let index = 0;
+            do {
+                roleB = Math.ceil((Math.random() * 20));
+                index += 1;
+                if (index === 20) {
+                    break;
                 }
-            }}
-            renderLabel={({ route, focused, color }) => (
-                <></>
-            )}
-        />
-    );
+            } while (roleA === roleB)
+            if (index === 20) {
+                setRole({
+                    roleA: 1,
+                    roleB: 2
+                })
+            } else {
+                setRole({
+                    roleA: roleA,
+                    roleB: roleB
+                })
+            }
+        }
+    }, [trackData]);
+
 
 
     return (
@@ -143,24 +107,31 @@ const TrackPlayer = (props) => {
                 isFullScreen
                 ?
                     <>
-                        <TouchableOpacity onPress={() => {
-                            setIsFullScreen(false)
-                        }}>
-                            <IonIcon
-                                name={isFullScreen ? 'chevron-down' : 'chevron-up'}
-                                size={24}
-                                color={COLOR_BASIC_1}
-                            />
-                        </TouchableOpacity>
-                        <View style={styles.tabContainer}>
-                            <TabView
-                                renderTabBar={renderTabBar}
-                                navigationState={{ index, routes }}
-                                renderScene={renderScene}
-                                onIndexChange={setIndex}
-                                initialLayout={{ width: layout.width }}
-                            />
+
+                        <View style={styles.header}>
+                            <TouchableOpacity onPress={() => {
+                                setIsFullScreen(false)
+                            }}>
+                                <IonIcon
+                                    name={'chevron-down'}
+                                    size={24}
+                                    color={COLOR_BASIC_2}
+                                />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => {
+                                onResetPlaylist();
+                            }}>
+                                <IonIcon
+                                    name={'close'}
+                                    size={24}
+                                    color={COLOR_BASIC_2}
+                                />
+                            </TouchableOpacity>
                         </View>
+                        <TabContainer
+                            trackData={trackData}
+                            role={role}
+                        />
                     </>
                     :
                     <></>
@@ -170,18 +141,15 @@ const TrackPlayer = (props) => {
                 (!trackData || loading) ?
                     <></>
                     :
-                    <View style={styles.wrapper}>
-                        <TrackPlayApp
-                            trackData={trackData}
-                            audioLink={listUrl[randomRange(0, listUrl.length-1)]}
-                            isFullScreen={isFullScreen}
-                            onFullScreenTrack={() => {
-                                setIsFullScreen(true);
-                            }}
-                        />
-                    </View>
+                    <TrackPlayApp
+                        trackData={trackData}
+                        audioLink={listUrl[randomRange(0, listUrl.length-1)]}
+                        isFullScreen={isFullScreen}
+                        onFullScreenTrack={() => {
+                            setIsFullScreen(true);
+                        }}
+                    />
             }
-
         </View>
     );
 };
@@ -201,25 +169,13 @@ const styles = StyleSheet.create({
         top: 0,
         height: '100%'
     },
-    wrapper: {
+    header: {
         width: '100%',
-        alignItems: 'center'
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: 5,
+        paddingHorizontal: 10,
     },
-    tabContainer: {
-        flex: 1,
-        // backgroundColor: 'red',
-        padding: 5,
-        width: '100%',
-    },
-    tabBar: {
-        backgroundColor: '#D0D2E1',
-        shadowOpacity: 0,
-        borderBottomWidth: 0,elevation:0
-    },
-    tabBarIndicatorStyle: {
-        height: 0,
-        shadowOpacity: 0,
-        borderBottomWidth: 0,
-        elevation:0
-    }
+
 });

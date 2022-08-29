@@ -13,7 +13,7 @@ import Slider from '@react-native-community/slider';
 import {IMAGE_RANDOM_BY_INDEX, WINDOW_WIDTH} from '../../utils/constants';
 import {toHHMMSS} from '../../utils/functions';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import {COLOR_BASIC_1, COLOR_BASIC_2} from '../../utils/colors';
+import {COLOR_BASIC_1, COLOR_BASIC_2, COLOR_WHITE} from '../../utils/colors';
 import {AppContext} from '../../contexts/AppContext';
 import {getRandomTrackId} from '../../databases/db';
 // import styles from './styles';
@@ -126,26 +126,26 @@ const TrackPlayApp = (props) => {
     // console.log(sliderValue)
     const currentTimeString = toHHMMSS(duration*sliderValue);
     const durationString = toHHMMSS(duration);
-    const data = (sliderValue ?? 0)*(WINDOW_WIDTH - 20)-50;
+    const data = (sliderValue ?? 0)*(WINDOW_WIDTH-40) - (sliderValue > 0.9 ? 45 : sliderValue > 0.8 ? 40 : sliderValue > 0.5 ? 30 : 20)
     if (isFullScreen) {
         return (
-            <>
+            <View style={styles.bigContainer}>
                 <View style={styles.sliderWrapper}>
                     <Slider
                         style={styles.progressBar}
                         minimumValue={0}
                         maximumValue={1}
                         value={sliderValue}
-                        minimumTrackTintColor="#111000"
-                        maximumTrackTintColor="#000000"
+                        minimumTrackTintColor={COLOR_BASIC_2}
+                        maximumTrackTintColor={COLOR_BASIC_1}
                         onSlidingStart={slidingStarted}
                         onSlidingComplete={slidingCompleted}
-                        thumbTintColor="#000"
+                        thumbTintColor={COLOR_BASIC_1}
                     />
                     <View style={[
                         styles.timeBar,
                         {
-                            left: data > 0 ? data : 0
+                            left: data
                         }
                     ]}>
                         <Text style={styles.timeBarText}>{currentTimeString}/{durationString}</Text>
@@ -210,8 +210,7 @@ const TrackPlayApp = (props) => {
                         />
                     </TouchableOpacity>
                 </View>
-
-            </>
+            </View>
         )
     }
     return (
@@ -266,28 +265,35 @@ const TrackPlayApp = (props) => {
 export default TrackPlayApp;
 
 const styles = StyleSheet.create({
+    bigContainer: {
+        paddingTop: 0,
+        paddingBottom: 20,
+        width: '100%',
+        alignItems: 'center',
+    },
     sliderWrapper: {
-        height: 36,
+        height: 24,
         flexDirection: 'row',
-        width: WINDOW_WIDTH - 20
+        alignItems: 'center',
+        width: WINDOW_WIDTH - 40,
     },
     progressBar: {
-        height: 20,
-        width: '100%',
-        // paddingBottom: 90,
-        flex: 1,
+        height: 24,
+        width: WINDOW_WIDTH - 40,
     },
     timeBar: {
-        padding: 2,
+        paddingVertical: 2,
+        paddingHorizontal: 5,
         borderRadius: 9,
-        backgroundColor: 'red',
         position: 'absolute',
-        top: 0,
+        top: 3,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: COLOR_BASIC_1
     },
     timeBarText: {
-        fontSize: 12
+        fontSize: 10,
+        color: COLOR_WHITE,
     },
     mainContainer: {
         // flex: 1,

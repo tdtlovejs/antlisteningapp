@@ -1,19 +1,31 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {COLOR_BASIC_2} from '../../utils/colors';
+import TranscriptSentences from './TranscriptSentences';
 
 
 const TabTranscript = (props) => {
     const {
-        trackData
+        trackData,
+        role
     } = props;
+    console.log(trackData?.sentences.length)
     return (
         <View style={styles.container}>
-            <ScrollView style={styles.transcript}>
-                <Text style={styles.transcriptText}>
-                    {trackData?.transcript ?? ''}
-                </Text>
-            </ScrollView>
+            {
+                (Array.isArray(trackData?.sentences) && trackData?.sentences.length > 0)
+                    ?
+                    <TranscriptSentences
+                        sentences={trackData.sentences}
+                        role={role}
+                    />
+                    :
+                    <ScrollView style={styles.transcript}>
+                        <Text style={styles.transcriptText}>
+                            {trackData?.transcript ?? ''}
+                        </Text>
+                    </ScrollView>
+            }
         </View>
     )
 }

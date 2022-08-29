@@ -203,7 +203,7 @@ export const NOTI_CHANNEL_ID_WORD_REMINDER = 'word-reminder';
 export const NOTI_CHANNEL_ID_DAILY_STUDY_REMINDER = 'daily-study-reminder';
 
 export const IMAGE_RANDOM_BY_INDEX = (index) => {
-    return `https://source.unsplash.com/random/200x200?sig=${index}`
+    return `https://source.unsplash.com/random/500x500?sig=${index}`
 }
 
 export const LIST_INDEX_VOCA_ADS = [

@@ -6,8 +6,10 @@ import _, {debounce} from 'lodash';
 import Input from '../themes/Input';
 import {isCloseToBottom} from '../utils/functions';
 import Loading from '../themes/Loading';
-import {COLOR_BASIC_2_OPACITY} from '../utils/colors';
+import {COLOR_BASIC_1, COLOR_BASIC_2, COLOR_BASIC_2_OPACITY, COLOR_WHITE} from '../utils/colors';
 import {AppContext} from '../contexts/AppContext';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import TrackRandom from './Home/TrackRandom';
 const pageSize = 10;
 const TabHome = (props) => {
     const {
@@ -109,53 +111,73 @@ const TabHome = (props) => {
     console.log()
     return (
         <View style={styles.container}>
-            <Input
-                placeholder={t('label.search')}
-                value={searchTextTemp}
-                onChangeText={(text) => {
-                    setSearchTextTemp(text);
-                }}
-                onPressIn={() => {
-                    if (searchTextTemp !== '') {
-                        setOptions(prev => ({
-                            ...prev,
-                            searching: true,
-                        }));
-                    }
-                }}
-            />
-            <ScrollView
-                onScroll={({nativeEvent}) => {
-                    if (isCloseToBottom(nativeEvent)) {
-                        if (!isEnd && !loading) {
+            <View style={styles.search}>
+                <IonIcon
+                    name='search'
+                    color={'#fff'}
+                    size={24}
+
+                />
+                <Input
+                    placeholder={'search'}
+                    value={searchTextTemp}
+                    onChangeText={(text) => {
+                        setSearchTextTemp(text);
+                    }}
+                    onPressIn={() => {
+                        if (searchTextTemp !== '') {
                             setOptions(prev => ({
                                 ...prev,
-                                page: prev.page + 1
-                            }))
+                                searching: true,
+                            }));
                         }
-                    }
-                }}
-                scrollEventThrottle={400}
-                style={styles.containerScroll}
-            >
-                {
-                    data.map((item, index) => {
-                        return (
-                            <TouchableOpacity style={styles.item} key={item.id} onPress={() => {
-                                console.log(item.id)
-                                addTrackToPlaylist(item.id)
-                            }}>
-                                <Text style={styles.itemText}>
-                                    {item.name}
-                                </Text>
-                            </TouchableOpacity>
-                        )
-                    })
-                }
-                {
-                    loading && <Loading />
-                }
-            </ScrollView>
+                    }}
+                    style={styles.searchInput}
+                />
+            </View>
+            <TrackRandom
+            />
+            {/*<ScrollView*/}
+            {/*    onScroll={({nativeEvent}) => {*/}
+            {/*        if (isCloseToBottom(nativeEvent)) {*/}
+            {/*            if (!isEnd && !loading) {*/}
+            {/*                setOptions(prev => ({*/}
+            {/*                    ...prev,*/}
+            {/*                    page: prev.page + 1*/}
+            {/*                }))*/}
+            {/*            }*/}
+            {/*        }*/}
+            {/*    }}*/}
+            {/*    scrollEventThrottle={400}*/}
+            {/*    style={styles.containerScroll}*/}
+            {/*>*/}
+            {/*    {*/}
+            {/*        data.map((item, index) => {*/}
+            {/*            return (*/}
+            {/*                <TouchableOpacity style={styles.item} key={item.id} onPress={() => {*/}
+            {/*                    console.log(item.id)*/}
+            {/*                    addTrackToPlaylist(item.id)*/}
+            {/*                }}>*/}
+            {/*                    <Text style={styles.itemText}>*/}
+            {/*                        {item.name}*/}
+            {/*                    </Text>*/}
+            {/*                    {*/}
+            {/*                        item.questions.length > 0*/}
+            {/*                        ?*/}
+            {/*                            <Text>*/}
+            {/*                              has questions*/}
+            {/*                            </Text>*/}
+            {/*                            :*/}
+            {/*                            <></>*/}
+            {/*                    }*/}
+            {/*                </TouchableOpacity>*/}
+            {/*            )*/}
+            {/*        })*/}
+            {/*    }*/}
+            {/*    {*/}
+            {/*        loading && <Loading />*/}
+            {/*    }*/}
+            {/*</ScrollView>*/}
         </View>
     );
 };
@@ -166,7 +188,22 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
+        // justifyContent: 'center',
+        paddingHorizontal: 10,
+        backgroundColor: COLOR_WHITE
+    },
+    search: {
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: COLOR_BASIC_2_OPACITY(0.4),
+        // paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 15,
+    },
+    searchInput: {
+        flex: 1,
+        borderBottomWidth: 0
     },
     containerScroll: {
         width: '100%',
