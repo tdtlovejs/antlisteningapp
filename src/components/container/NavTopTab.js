@@ -11,8 +11,11 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import TabMyLibrary from './TabMyLibrary';
 import MyPlaylistContextProvider from './MyLibrary/contexts/MyPlaylistContext';
 import {AppContext} from '../../contexts/AppContext';
+import MyPlaylistView from './MyLibrary/MyPlaylistView';
+import {createStackNavigator} from '@react-navigation/stack';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator()
 
 const NavTopTab = (props) => {
     const {
@@ -86,7 +89,7 @@ const NavTopTab = (props) => {
                                     track ? styles.tabScreenWithPlayer : {}
                                 ]}>
                                     <MyPlaylistContextProvider>
-                                        <TabMyLibrary {...props}/>
+                                        <TabMyLibrary {...props} />
                                     </MyPlaylistContextProvider>
                                 </View>
                             )

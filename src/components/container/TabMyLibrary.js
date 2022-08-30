@@ -1,14 +1,14 @@
 import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {COLOR_BASIC_1, COLOR_BASIC_2, COLOR_GREEN, COLOR_WHITE, COLOR_WHITE_OPACITY} from '../../utils/colors';
-import {MyPlaylistContext} from './MyLibrary/contexts/MyPlaylistContext';
-import Loading from '../../themes/Loading';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MyPlaylistContextProvider, {MyPlaylistContext} from './MyLibrary/contexts/MyPlaylistContext';
 import {IMAGE_RANDOM_BY_INDEX, WINDOW_WIDTH} from '../../utils/constants';
-import ModalMyPlaylistNew from './MyLibrary/ModalMyPlaylistNew';
 import {useIsFocused} from '@react-navigation/native';
+import MyPlaylistView from './MyLibrary/MyPlaylistView';
+import {createStackNavigator} from '@react-navigation/stack';
+import MyPlayListPage from './MyLibrary/MyPlayListPage';
 
+const Stack = createStackNavigator()
 
 const TabMyLibrary = (props) => {
     const {
@@ -18,10 +18,12 @@ const TabMyLibrary = (props) => {
         MyPlaylist,
         loadingMyPlaylists
     } = useContext(MyPlaylistContext);
-    const isFocused = useIsFocused();
-    const [isModalNew, setIsModalNew] = useState(false);
 
-    // const [group, setGroup] = useState(null);
+    const {
+        navigation,
+        route,
+    } = props;
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         if (isFocused) {
@@ -29,83 +31,43 @@ const TabMyLibrary = (props) => {
         }
     }, [isFocused])
 
-    const data = [...myPlaylists];
-    const showNewGroupBtn = () => {
-        return (
-            <View style={styles.newGroup}>
-                <TouchableOpacity style={styles.newGroupBtn} onPress={() => {
-                    setIsModalNew(true);
-                }}>
-                    <MaterialCommunityIcon
-                        name="playlist-plus"
-                        size={36}
-                        color={COLOR_BASIC_2}
-                    />
-                    <Text style={styles.newGroupBtnText}>
-                        new playlist
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        )
-    }
     return (
-        <View style={styles.container}>
-            {
-                loadingMyPlaylists
-                ?
-                    <Loading />
-                    :
-                    data.length === 0
-                ?
-                        <>
-                            {showNewGroupBtn()}
-                        </>
-                        :
-                        <>
-                            <FlatList
-                                style={styles.flatlistContainer}
-                                data={[
-                                    {isBtnNew: true},
-                                    ...myPlaylists,
-                                ]}
-                                renderItem={({item, index}) => {
-                                    if (item.isBtnNew) {
-                                        return (
-                                            <View style={styles.itemMyPlaylistWrapper}>
-                                                {showNewGroupBtn()}
-                                            </View>
-                                        )
-                                    }
-                                    return (
-                                        <View style={styles.itemMyPlaylistWrapper}>
-                                            <TouchableOpacity style={styles.itemMyPlaylist}>
-                                                <View style={styles.itemMyPlaylistBg}>
-
-                                                </View>
-                                                <Image
-                                                    style={styles.myPlaylistImg}
-                                                    source={{
-                                                        uri: IMAGE_RANDOM_BY_INDEX(index)
-                                                    }}
-                                                />
-                                                <View style={styles.itemMyPlaylistContent}>
-                                                    <Text style={styles.itemMyPlaylistNameText}>
-                                                        {item.name}
-                                                    </Text>
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
-                                    )
-                                }}
-                                numColumns={2}
-                            />
-                        </>
-            }
-            {isModalNew && <ModalMyPlaylistNew
-                onClose={() => {
-                    setIsModalNew(false);
+        <View style={{
+            backgroundColor: '#fff',
+            height: '100%',
+        }}>
+            <Stack.Navigator
+                screenOptions={{
+                    headerShown: true,
                 }}
-            />}
+            >
+                <Stack.Screen
+                    name={'myPlayListPage'}
+                    component={(props) => {
+                        return (
+                            <MyPlayListPage {...props}/>
+                        )
+                    }}
+                    options={{
+                        header: (props) => {
+                            return (
+                                <></>
+                            )
+                        },
+                    }}
+                />
+                <Stack.Screen
+                    name={'myPlayListView'}
+                    component={MyPlaylistView}
+                    options={{
+                        header: (props) => {
+                            return (
+                                <></>
+                            )
+                        },
+                    }}
+                />
+            </Stack.Navigator>
         </View>
     )
 }
