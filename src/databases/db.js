@@ -129,7 +129,7 @@ export const updateMyPlaylistById = (id, data) => new Promise((resolve, reject) 
             ]
         }
     })
-
+    console.log('array ',array)
     db.transaction(tx => {
         tx.executeSql(
             `UPDATE ${TABLE_NAME_MY_PLAYLIST} SET ${array.map(item => item.key + " = ?").join(',')} WHERE id = ?`,
@@ -253,6 +253,31 @@ export const getRandomTracks = (nbTracks) => new Promise((resolve, reject) => {
     });
 });
 
+export const getTracksByListIds = (ids) => new Promise((resolve, reject) => {
+    db.transaction(tx => {
+        tx.executeSql(
+            `SELECT * FROM ${TABLE_NAME_TRACK} WHERE id IN (${ids.map(item => '?').join(',')});`,
+            [...ids],
+            (tx, results) => {
+                const {rows} = results;
+                let words = [];
+                for (let i = 0; i < rows.length; i++) {
+                    words.push({
+                        ...rows.item(i),
+                        sentences: JSON.parse(rows.item(i).sentences),
+                        questions: JSON.parse(rows.item(i).questions),
+                    });
+                }
+                resolve(words);
+            },
+            (error) => {
+                reject(error);
+            },
+        );
+    });
+});
+
+
 export const getTrackById = (id) => new Promise((resolve, reject) => {
     console.log(db)
     db.transaction(tx => {
@@ -353,6 +378,25 @@ export const updateLiked = (id, liked) => new Promise((resolve, reject) => {
     });
 });
 
+export const updateListenAtById = (id) => new Promise((resolve, reject) => {
+    const time = new Date().getTime();
+    db.transaction(tx => {
+        tx.executeSql(
+            `UPDATE ${TABLE_NAME_TRACK} SET  listenAt = ? WHERE id = ?`,
+            [
+                time,
+                id
+            ],
+            (tx, results) => {
+                resolve(results);
+            },
+            (error) => {
+                reject(error);
+            },
+        );
+    });
+});
+
 export const getTracksByQueryAndPaginateAndFilters = (page, query, pageSize, filters) => new Promise((resolve, reject) => {
     const text = query.trim().toLowerCase();
     const time = new Date().getTime();
@@ -388,6 +432,33 @@ export const getTracksByQueryAndPaginateAndFilters = (page, query, pageSize, fil
         );
     });
 });
-
+export const getTracksByRecently = (nbTracks) => new Promise((resolve, reject) => {
+    // console.log(db)
+    db.transaction(tx => {
+        console.log('tx ', tx)
+        tx.executeSql(
+            `SELECT * FROM ${TABLE_NAME_TRACK} ORDER BY listenAt DESC LIMIT ?`,
+            [
+                nbTracks
+            ],
+            (tx, results) => {
+                const {rows} = results;
+                let words = [];
+                for (let i = 0; i < rows.length; i++) {
+                    words.push({
+                        ...rows.item(i),
+                        sentences: JSON.parse(rows.item(i).sentences),
+                        questions: JSON.parse(rows.item(i).questions),
+                    });
+                }
+                resolve(words);
+            },
+            (error) => {
+                console.log('error ',error)
+                reject(error);
+            },
+        );
+    });
+});
 export default db;
 

@@ -29,7 +29,6 @@ const NavContainer = (props) => {
     const {
         track
     } = appData;
-    console.log('dbDic ',dbDone)
     if (
         !loadingOpenAd
         || dbDone !== DONE

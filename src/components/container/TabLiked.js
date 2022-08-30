@@ -7,6 +7,7 @@ import {isCloseToBottom} from '../../utils/functions';
 import Loading from '../../themes/Loading';
 import TrackItem from '../TrackItem';
 import {useIsFocused} from '@react-navigation/native';
+import Header from './Header';
 
 const pageSize = 20;
 const TabLiked = (props) => {
@@ -60,7 +61,6 @@ const TabLiked = (props) => {
             liked: 1
         })
             .then(res => {
-                console.log(res.length)
                 if (page === 1) {
                     setData(res);
                 } else {
@@ -91,6 +91,7 @@ const TabLiked = (props) => {
     }
     return (
         <View style={styles.container}>
+            <Header />
             <ScrollView
                 onScroll={({nativeEvent}) => {
                     if (isCloseToBottom(nativeEvent)) {

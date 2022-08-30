@@ -12,7 +12,7 @@ import {useTranslation} from "react-i18next";
 import RNFetchBlob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs';
 import {unzip} from 'react-native-zip-archive';
-import {importTracks} from '../databases/db';
+import {importTracks, updateListenAtById} from '../databases/db';
 
 export const AppContext = createContext({});
 
@@ -117,6 +117,7 @@ const AppContextProvider = ({children}) => {
         })
     }, [])
     const addTrackToPlaylist = (idTrack) => {
+        updateListenAtById(idTrack)
         let playlistTemp = appData.playlist.filter(item => item !== idTrack);
         setAppData(prev => ({
             playlist: [
@@ -138,7 +139,6 @@ const AppContextProvider = ({children}) => {
     const onDownloadDic = () => {
         const googleDriveDicDBId = '1TFUvr9cm3PlZDj9e99Vi8e1mZ7sMhm7X';
         const link = `https://drive.google.com/uc?export=view&id=${googleDriveDicDBId}&confirm=t`;
-        console.log(link)
         const {config, fs} = RNFetchBlob;
         const path = `${RNFS.ExternalDirectoryPath}/antlistening.zip`;
         const pathDbFile = RNFS.ExternalDirectoryPath;
@@ -151,14 +151,11 @@ const AppContextProvider = ({children}) => {
                 description: 'Downloading'
             }
         }
-        console.log(options)
         fs.exists(path).then(async isExist => {
-            console.log(isExist)
             if (!isExist) {
                 config(options)
                     .fetch('POST', link)
                     .then(async (res) => {
-                        console.log('AAAAAa')
                         unZipDbFile(path, pathDbFile)
                     })
                     .catch(err => {
@@ -202,7 +199,6 @@ const AppContextProvider = ({children}) => {
 
             })
     }
-    console.log('db && loadingDbDone && DbDone !== DONE ',dbDone)
 
     useEffect(() => {
         if (db && loadingDbDone && dbDone !== DONE) {
@@ -213,11 +209,9 @@ const AppContextProvider = ({children}) => {
                         [],
                         (tx, results) => {
                             const arr = new Array(results.rows.length).fill(0);
-                            console.log('arr ', arr.length)
                             let items = arr.map((item, index) => {
                                 return results.rows.item(index);
                             })
-                            console.log('items ',items.length)
                             importTracks(items)
                                 .then(res => {
                                     // RNFS.unlink(`${RNFS.ExternalDirectoryPath}/antlistening.db`)

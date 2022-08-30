@@ -2,6 +2,9 @@ import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native
 import React, {useEffect, useState} from 'react';
 import {COLOR_BASIC_1, COLOR_BASIC_2, COLOR_BASIC_2_OPACITY, COLOR_WHITE} from '../../../utils/colors';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import {useIsFocused} from '@react-navigation/native';
+import {getMyPlaylistById, getTracksByListIds} from '../../../databases/db';
+import TrackItem from '../../TrackItem';
 
 
 const pageSize = 20;
@@ -10,11 +13,32 @@ const MyPlaylistView = (props) => {
         navigation,
         route,
     } = props;
-    const {
-        myPlaylist
-    } = route.params;
-    console.log(myPlaylist)
+    // const {
+    //     myPlaylist
+    // } = route.params;
+    const [myPlaylist, setMyPlaylist] = useState(null);
+    const [tracks, setTracks] = useState([]);
+    const isFocused = useIsFocused();
+    useEffect(() => {
+        if (isFocused) {
+            getMyPlaylistById(route.params.myPlaylist.id)
+                .then(res => {
+                    setMyPlaylist(res);
+                })
+        }
+    }, [isFocused])
 
+    // const tracks = Array.isArray(myPlaylist?.tracks) ? myPlaylist.tracks : [];
+
+    useEffect(() => {
+        if (myPlaylist) {
+            const tracks = Array.isArray(myPlaylist?.tracks) ? myPlaylist.tracks : [];
+            getTracksByListIds(tracks)
+                .then(res => {
+                    setTracks(res);
+                })
+        }
+    }, [myPlaylist])
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -31,20 +55,25 @@ const MyPlaylistView = (props) => {
                     />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>
-                    {myPlaylist.name}
+                    {myPlaylist?.name}
                 </Text>
             </View>
             <View style={styles.body}>
-
                 <Text style={styles.trackNbText}>
-                    {myPlaylist.tracks.length} tracks
+                    {Array.isArray(myPlaylist?.tracks) ? myPlaylist.tracks.length : ''} tracks
                 </Text>
                 <TouchableOpacity style={styles.playShuffeeBtn}>
                     <Text style={styles.playShuffeeText}>
                         phát ngẫu nhiên
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.addTrackBtn}>
+                <TouchableOpacity style={styles.addTrackBtn}
+                    onPress={() => {
+                        navigation.navigate('myPlayListAddTrack', {
+                            myPlaylist: myPlaylist
+                        })
+                    }}
+                >
                     <IonIcon
                         name={'add-circle-outline'}
                         size={24}
@@ -54,6 +83,17 @@ const MyPlaylistView = (props) => {
                         add track
                     </Text>
                 </TouchableOpacity>
+                <ScrollView style={styles.trackList}>
+                    {
+                        tracks.map((item, index) => {
+                            return (
+                                <TrackItem
+                                    track={item}
+                                />
+                            )
+                        })
+                    }
+                </ScrollView>
             </View>
         </View>
     )
@@ -67,7 +107,8 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: COLOR_WHITE
+        backgroundColor: COLOR_WHITE,
+        // marginTop: -50,
     },
     header: {
         width: '100%',
@@ -82,7 +123,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: COLOR_BASIC_1,
         letterSpacing: 1,
-        textTransform: 'uppercase',
+        // textTransform: 'uppercase',
     },
     iconBtn: {
         position: 'absolute',
@@ -96,6 +137,7 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
         alignItems: 'center',
+        width: '100%'
     },
     nameText: {
         color: COLOR_BASIC_1,
@@ -124,5 +166,8 @@ const styles = StyleSheet.create({
     addTrackText: {
         fontSize: 12,
         color: COLOR_BASIC_2,
+    },
+    trackList: {
+        width: '100%'
     }
 })

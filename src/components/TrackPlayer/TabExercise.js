@@ -15,7 +15,6 @@ const TabExercise = (props) => {
     const {
         trackData
     } = props;
-    console.log(trackData.questions);
     const [answers, setAnswers] = useState({});
     const [isChecked, setIsChecked] = useState(false);
 

@@ -7,6 +7,7 @@ import {IMAGE_RANDOM_BY_INDEX, WINDOW_WIDTH} from '../../../utils/constants';
 import {MyPlaylistContext} from './contexts/MyPlaylistContext';
 import Loading from '../../../themes/Loading';
 import ModalMyPlaylistNew from './ModalMyPlaylistNew';
+import Header from '../Header';
 
 
 const MyPlayListPage = (props) => {
@@ -45,6 +46,7 @@ const MyPlayListPage = (props) => {
     }
     return (
         <View style={styles.container}>
+            <Header />
             {
                 loadingMyPlaylists
                 ?
@@ -52,9 +54,9 @@ const MyPlayListPage = (props) => {
                     :
                     data.length === 0
                 ?
-                        <>
+                        <View style={styles.emptyWrapper}>
                             {showNewGroupBtn()}
-                        </>
+                        </View>
                         :
                         <>
                             <FlatList
@@ -120,6 +122,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: COLOR_WHITE
+    },
+    emptyWrapper: {
+        flex: 1,
+        height: WINDOW_WIDTH/2,
+        width: WINDOW_WIDTH/2,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     newGroup: {
         width: '100%',

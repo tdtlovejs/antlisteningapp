@@ -7,11 +7,6 @@ import TrackPlayer from 'react-native-track-player';
 import {IMAGE_RANDOM_BY_INDEX, randomRange} from '../utils/constants';
 import {AppContext} from '../contexts/AppContext';
 
-const listUrl = [
-    'http://mirrors.standaloneinstaller.com/audio-sample/aac/in.aac',
-    'http://mirrors.standaloneinstaller.com/audio-sample/ogg/out.mp3',
-    'https://www.englishclub.com/efl/wp-content/uploads/2011/12/EnglishClub.com-The-Goblins-Christmas.mp3',
-]
 const TrackItem = (props) => {
     const {
         isPageLiked,
@@ -40,17 +35,6 @@ const TrackItem = (props) => {
             <></>
         )
 
-    }
-    try {
-        TrackPlayer.getCurrentTrack()
-            .then(res => {
-                TrackPlayer.getTrack(res)
-                    .then(res => {
-                        console.log(res)
-                    })
-            })
-
-    } catch (err) {
     }
     return (
         <View style={styles.container}>

@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {getDataByQueryAndPaginate, getTest} from '../../databases/db';
+import {getDataByQueryAndPaginate, getRandomTracks, getTest} from '../../databases/db';
 import {useTranslation} from 'react-i18next';
 import _, {debounce} from 'lodash';
 import Input from '../../themes/Input';
@@ -10,6 +10,8 @@ import {COLOR_BASIC_1, COLOR_BASIC_2, COLOR_BASIC_2_OPACITY, COLOR_WHITE} from '
 import {AppContext} from '../../contexts/AppContext';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import TrackRandom from './Home/TrackRandom';
+import Header from './Header';
+import PlayRecentlyTrack from './Home/PlayRecentlyTrack';
 const pageSize = 10;
 const TabHome = (props) => {
     const {
@@ -36,6 +38,15 @@ const TabHome = (props) => {
         searchText,
         loading,
     } = options;
+
+    useEffect(() => {
+        getRandomTracks(100)
+            .then(res => {
+                res.forEach(item => {
+                    console.log(item.id)
+                })
+            })
+    }, [])
 
     useEffect(() => {
         if (page) {
@@ -111,6 +122,7 @@ const TabHome = (props) => {
     console.log()
     return (
         <View style={styles.container}>
+            <Header />
             <View style={styles.search}>
                 <IonIcon
                     name='search'
@@ -135,8 +147,11 @@ const TabHome = (props) => {
                     style={styles.searchInput}
                 />
             </View>
-            <TrackRandom
-            />
+            {/*<TrackRandom*/}
+            {/*/>*/}
+            {/*<PlayRecentlyTrack*/}
+
+            {/*/>*/}
             {/*<ScrollView*/}
             {/*    onScroll={({nativeEvent}) => {*/}
             {/*        if (isCloseToBottom(nativeEvent)) {*/}

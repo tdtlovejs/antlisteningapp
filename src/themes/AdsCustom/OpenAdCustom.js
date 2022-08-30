@@ -14,7 +14,6 @@ const OpenAdCustom = (props) => {
     const { isLoaded, isClosed, load, show } = useAppOpenAd(adUnitId, {
         requestNonPersonalizedAdsOnly: true,
     });
-    console.log('isLoaded ',isLoaded)
     useEffect(() => {
         if (isLoaded) {
             try {

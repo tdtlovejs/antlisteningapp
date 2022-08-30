@@ -40,12 +40,7 @@ const NavTopTab = (props) => {
     }
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Image
-                    source={require('../../assets/images/ant.png')}
-                    style={styles.logoImg}
-                />
-            </View>
+
             <View style={[
                 styles.body,
                 track ? styles.bodyWithPlayer : {}
@@ -157,16 +152,7 @@ const styles = StyleSheet.create({
     tabScreenWithPlayer: {
         paddingBottom: 60
     },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 5,
-    },
-    logoImg: {
-        width: 36,
-        height: 36,
-    },
+
     body: {
         flex: 1,
         width: '100%',

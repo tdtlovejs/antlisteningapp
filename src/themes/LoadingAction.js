@@ -22,7 +22,9 @@ const styles = StyleSheet.create({
         right: 0,
         paddingVertical: 10,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        zIndex: 999,
+        elevation: 999
     },
 })
 

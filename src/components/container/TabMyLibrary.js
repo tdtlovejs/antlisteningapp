@@ -7,6 +7,7 @@ import {useIsFocused} from '@react-navigation/native';
 import MyPlaylistView from './MyLibrary/MyPlaylistView';
 import {createStackNavigator} from '@react-navigation/stack';
 import MyPlayListPage from './MyLibrary/MyPlayListPage';
+import MyPlaylistAddTrack from './MyLibrary/MyPlaylistAddTrack';
 
 const Stack = createStackNavigator()
 
@@ -59,6 +60,17 @@ const TabMyLibrary = (props) => {
                 <Stack.Screen
                     name={'myPlayListView'}
                     component={MyPlaylistView}
+                    options={{
+                        header: (props) => {
+                            return (
+                                <></>
+                            )
+                        },
+                    }}
+                />
+                <Stack.Screen
+                    name={'myPlayListAddTrack'}
+                    component={MyPlaylistAddTrack}
                     options={{
                         header: (props) => {
                             return (

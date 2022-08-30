@@ -9,7 +9,6 @@ const TabTranscript = (props) => {
         trackData,
         role
     } = props;
-    console.log(trackData?.sentences.length)
     return (
         <View style={styles.container}>
             {
