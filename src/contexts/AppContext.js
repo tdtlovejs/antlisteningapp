@@ -105,27 +105,27 @@ const AppContextProvider = ({children}) => {
 
 
     useEffect(() => {
-        NetInfo.addEventListener(async state => {
-            if (!NO_ADS) {
-                if (!state.isConnected) {
-                    setNoAds(true);
-                } else {
-                    setNoAds(false);
-                }
-            }
-            setIsConnectedInternet(state.isConnected);
-        })
+        // NetInfo.addEventListener(async state => {
+        //     if (!NO_ADS) {
+        //         if (!state.isConnected) {
+        //             setNoAds(true);
+        //         } else {
+        //             setNoAds(false);
+        //         }
+        //     }
+        //     setIsConnectedInternet(state.isConnected);
+        // })
     }, [])
     const addTrackToPlaylist = (idTrack) => {
-        updateListenAtById(idTrack)
-        let playlistTemp = appData.playlist.filter(item => item !== idTrack);
-        setAppData(prev => ({
-            playlist: [
-                ...idTrack,
-                playlistTemp
-            ],
-            track: idTrack
-        }))
+        // updateListenAtById(idTrack)
+        // let playlistTemp = appData.playlist.filter(item => item !== idTrack);
+        // setAppData(prev => ({
+        //     playlist: [
+        //         ...idTrack,
+        //         playlistTemp
+        //     ],
+        //     track: idTrack
+        // }))
 
     }
 

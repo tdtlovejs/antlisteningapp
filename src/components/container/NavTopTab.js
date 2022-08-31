@@ -38,6 +38,27 @@ const NavTopTab = (props) => {
             </View>
         )
     }
+
+    const RenderTabHome = (props) => {
+        return (
+            <View style={[
+                styles.tabScreen,
+                track ? styles.tabScreenWithPlayer : {}
+            ]}>
+                <TabHome {...props}/>
+            </View>
+        )
+    }
+    const RenderTabLiked = (props) => {
+        return (
+            <View style={[
+                styles.tabScreen,
+                track ? styles.tabScreenWithPlayer : {}
+            ]}>
+                <TabLiked {...props}/>
+            </View>
+        )
+    }
     return (
         <View style={styles.container}>
 
@@ -50,16 +71,7 @@ const NavTopTab = (props) => {
                 >
                     <Tab.Screen
                         name="home"
-                        component={(props) => {
-                            return (
-                                <View style={[
-                                    styles.tabScreen,
-                                    track ? styles.tabScreenWithPlayer : {}
-                                ]}>
-                                    <TabHome {...props}/>
-                                </View>
-                            )
-                        }}
+                        component={RenderTabHome}
                         options={{
                             tabBarIcon: ({ route, focused, color }) => {
                                 return (
@@ -75,46 +87,37 @@ const NavTopTab = (props) => {
                             // tabBarActiveBackgroundColor: 'red'
                         }}
                     />
-                    <Tab.Screen
-                        name="mylibrary"
-                        component={(props) => {
-                            return (
-                                <View style={[
-                                    styles.tabScreen,
-                                    track ? styles.tabScreenWithPlayer : {}
-                                ]}>
-                                    <MyPlaylistContextProvider>
-                                        <TabMyLibrary {...props} />
-                                    </MyPlaylistContextProvider>
-                                </View>
-                            )
-                        }}
-                        options={{
-                            tabBarIcon: ({ route, focused, color }) => {
-                                return (
-                                    <MaterialIcon
-                                        name={focused ? 'my-library-music' : 'my-library-music'}
-                                        color={focused ? COLOR_BASIC_1 : COLOR_BASIC_2}
-                                        size={24}
-                                    />
-                                )
-                            },
-                            tabBarShowLabel: false,
-                            headerShown: false
-                        }}
-                    />
+                    {/*<Tab.Screen*/}
+                    {/*    name="mylibrary"*/}
+                    {/*    component={(props) => {*/}
+                    {/*        return (*/}
+                    {/*            <View style={[*/}
+                    {/*                styles.tabScreen,*/}
+                    {/*                track ? styles.tabScreenWithPlayer : {}*/}
+                    {/*            ]}>*/}
+                    {/*                <MyPlaylistContextProvider>*/}
+                    {/*                    <TabMyLibrary {...props} />*/}
+                    {/*                </MyPlaylistContextProvider>*/}
+                    {/*            </View>*/}
+                    {/*        )*/}
+                    {/*    }}*/}
+                    {/*    options={{*/}
+                    {/*        tabBarIcon: ({ route, focused, color }) => {*/}
+                    {/*            return (*/}
+                    {/*                <MaterialIcon*/}
+                    {/*                    name={focused ? 'my-library-music' : 'my-library-music'}*/}
+                    {/*                    color={focused ? COLOR_BASIC_1 : COLOR_BASIC_2}*/}
+                    {/*                    size={24}*/}
+                    {/*                />*/}
+                    {/*            )*/}
+                    {/*        },*/}
+                    {/*        tabBarShowLabel: false,*/}
+                    {/*        headerShown: false*/}
+                    {/*    }}*/}
+                    {/*/>*/}
                     <Tab.Screen
                         name="liked"
-                        component={(props) => {
-                            return (
-                                <View style={[
-                                    styles.tabScreen,
-                                    track ? styles.tabScreenWithPlayer : {}
-                                ]}>
-                                    <TabLiked {...props}/>
-                                </View>
-                            )
-                        }}
+                        component={RenderTabLiked}
                         options={{
                             tabBarIcon: ({ route, focused, color }) => {
                                 return (

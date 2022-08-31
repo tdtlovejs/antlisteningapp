@@ -44,4 +44,4 @@ mobileAds()
 
 AppRegistry.registerComponent(appName, () => App);
 
-TrackPlayer.registerPlaybackService(() => require('./service.js'));
+// TrackPlayer.registerPlaybackService(() => require('./service.js'));

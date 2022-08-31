@@ -1,19 +1,19 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {getDataByQueryAndPaginate, getRandomTracks} from '../../databases/db';
+import {getDataByQueryAndPaginate, getRandomTracks} from '../../../databases/db';
 import {useTranslation} from 'react-i18next';
 import _, {debounce} from 'lodash';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import {AppContext} from '../../contexts/AppContext';
-import Header from './Header';
-import Input from '../../themes/Input';
-import TrackRandom from './Home/TrackRandom';
-import PlayRecentlyTrack from './Home/PlayRecentlyTrack';
-import PlaylistTrack from './Home/PlaylistTrack';
-import {COLOR_BASIC_2_OPACITY, COLOR_WHITE} from '../../utils/colors';
+import Input from '../../../themes/Input';
 
+import {COLOR_BASIC_1, COLOR_BASIC_2, COLOR_BASIC_2_OPACITY, COLOR_WHITE} from '../../../utils/colors';
+import {AppContext} from '../../../contexts/AppContext';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import Header from './../Header';
+import PlaylistTrack from './../Home/PlaylistTrack';
+import TrackRandom from './TrackRandom';
+import PlayRecentlyTrack from './PlayRecentlyTrack';
 const pageSize = 10;
-const TabHome = (props) => {
+const HomePage = (props) => {
     const {
         navigation,
         route,
@@ -24,7 +24,7 @@ const TabHome = (props) => {
         addTrackToPlaylist
     } = useContext(AppContext);
     const {t} = useTranslation();
-    const [playlists, setPlaylists] = useState(require('../../data/playlists.json'))
+    const [playlists, setPlaylists] = useState(require('../../../data/playlists.json'))
     const [data, setData] = useState([]);
     const [searchTextTemp, setSearchTextTemp] = useState('');
     const [options, setOptions] = useState({
@@ -113,7 +113,7 @@ const TabHome = (props) => {
     // }
 
     useEffect(() => {
-        console.log('TabHome');
+        console.log('HomePage');
     }, [])
 
     return (
@@ -209,7 +209,7 @@ const TabHome = (props) => {
     );
 };
 
-export default TabHome;
+export default HomePage;
 const styles = StyleSheet.create({
     container: {
         height: '100%',

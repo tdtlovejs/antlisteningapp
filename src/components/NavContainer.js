@@ -11,6 +11,9 @@ import TrackPlayApp from './TrackPlayer/TrackPlayApp';
 import TrackPage from './container/NavTopTab';
 import NavTopTab from './container/NavTopTab';
 import {DONE} from '../utils/constants';
+import HomePage from './container/Home/HomePage';
+import PlaylistPage from './container/Home/PlaylistPage';
+import {COLOR_WHITE} from '../utils/colors';
 const Stack = createStackNavigator()
 
 
@@ -45,6 +48,13 @@ const NavContainer = (props) => {
         )
     }
 
+    const RenderNavTopTab = (props) => {
+        return (
+            <NavTopTab
+                {...props}
+            />
+        )
+    }
     return (
         <View style={[
             styles.container,
@@ -53,10 +63,36 @@ const NavContainer = (props) => {
                 styles.home,
                 track ? styles.homeWithPlayer : {}
             ]}>
-                <NavTopTab
-                    {...props}
-                />
+                <Stack.Navigator
+                    screenOptions={{
+                        headerShown: true,
+                    }}
+                >
+                    <Stack.Screen
+                        name={'navTopTab'}
+                        component={RenderNavTopTab}
+                        options={{
+                            header: (props) => {
+                                return (
+                                    <></>
+                                )
+                            },
+                        }}
+                    />
+                    <Stack.Screen
+                        name={'playlistPage'}
+                        component={PlaylistPage}
+                        options={{
+                            header: (props) => {
+                                return (
+                                    <></>
+                                )
+                            },
+                        }}
+                    />
+                </Stack.Navigator>
             </View>
+
             {track && <TrackPlayer {...props}/>}
         </View>
     )
@@ -70,6 +106,7 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: COLOR_WHITE,
     },
     homeWithPlayer: {
         // marginBottom: 60
